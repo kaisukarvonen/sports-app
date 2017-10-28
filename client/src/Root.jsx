@@ -4,28 +4,28 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
-import App from './App';
-import rootSaga from './sagas/objects';
-import rootReducer from './reducers/objects';
+import App from './components/App';
+import rootSaga from './sagas/sports';
+import rootReducer from './reducers/sports';
 
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
   rootReducer,
-  //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(sagaMiddleware)
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  applyMiddleware(sagaMiddleware),
 );
 
 sagaMiddleware.run(rootSaga);
 
-export default class Root extends React.Component {
-  render() {
-    return (
-      <div>
+const Root = () => {
+  return (
+    <div>
       <Provider store={store}>
         <App />
       </Provider>
     </div>
-    )
-  }
-}
+  );
+};
+
+export default Root;
