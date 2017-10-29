@@ -22,6 +22,8 @@ function sports(state = {}, action) {
       });
       newState.sports.splice(indexOfSportToDelete, 1);
       return newState;
+    case actions.ADD_SPORT:
+      return Object.assign({}, state, state.sports.push(action.sport));
     default:
       return Object.assign({}, defaultState, state);
   }

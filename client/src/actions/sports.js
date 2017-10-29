@@ -2,10 +2,18 @@ export const FETCH_SPORTS = 'FETCH_SPORTS';
 export const FETCHED_SPORTS = 'FETCHED_SPORTS';
 export const FETCH_SPORTS_ERROR = 'FETCH_SPORTS_ERROR';
 export const DELETE_SPORT = 'DELETE_SPORT';
+export const ADD_SPORT = 'ADD_SPORT';
 
 export function fetchSports() {
   return {
     type: FETCH_SPORTS,
+  };
+}
+
+export function addSport(sport) {
+  return {
+    type: ADD_SPORT,
+    sport,
   };
 }
 

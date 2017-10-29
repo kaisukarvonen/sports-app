@@ -16,25 +16,24 @@ router.get('/all', (req, res) => {
 });
 
 router.put('/add', (req, res) => {
-  // const activity = new Sport({
-  //   _id: new ObjectId(),
-  //   name: 'Testiurheilu2',
-  //   date: new Date(),
-  //   duration: 3,
-  //   comments: 'Jalkatreeni',
-  // });
+  const activity = new Sport({
+    _id: new ObjectId(),
+    name: req.body.activityName,
+    date: req.body.date,
+    duration: req.body.duration,
+    comments: req.body.details,
+  });
 
   activity.save((err) => {
-    if (err) throw err;
-
-    console.log('Sport saved!');
+    if (err) res.sendStatus(500);
+    res.sendStatus(200);
   });
 });
 
 
 router.delete('/delete/:_id', (req, res) => {
   Sport.remove({ _id: req.params._id}, (err) => {
-    if (err) throw err;
+    if (err) res.sendStatus(500);
     res.sendStatus(200);
   })
 });

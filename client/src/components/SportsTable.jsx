@@ -15,10 +15,10 @@ const SportsTable = (props) => {
     <Table celled>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>Activity</Table.HeaderCell>
+          <Table.HeaderCell>Sport activity</Table.HeaderCell>
           <Table.HeaderCell>Date</Table.HeaderCell>
           <Table.HeaderCell>Duration</Table.HeaderCell>
-          <Table.HeaderCell>Additional info</Table.HeaderCell>
+          <Table.HeaderCell>Details</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>
