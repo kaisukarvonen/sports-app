@@ -1,7 +1,7 @@
 import { takeLatest } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import * as actions from '../actions/sports';
-import { fetchSports, deleteSport, addSport } from './apis/sports';
+import { fetchSports, deleteSport, addSport, updateSport } from './apis/sports';
 
 
 function* fetchSportsWorker() {
@@ -31,6 +31,19 @@ function* addSportWorker(action) {
   }
 }
 
+function* updateSportWorker(action) {
+  try {
+    const response = yield call(updateSport, action);
+    if (response.status === 200) {
+      yield put(actions.fetchSports());
+    } else {
+      yield put(actions.fetchError('Updating activity failed'));
+    }
+  } catch (e) {
+    yield put(actions.fetchError('Updating activity failed'));
+  }
+}
+
 function* deleteSportWorker(action) {
   try {
     const response = yield call(deleteSport, action);
@@ -48,6 +61,8 @@ const sportSagas = [
   takeLatest(actions.FETCH_SPORTS, fetchSportsWorker),
   takeLatest(actions.DELETE_SPORT, deleteSportWorker),
   takeLatest(actions.ADD_SPORT, addSportWorker),
+  takeLatest(actions.UPDATE_SPORT, updateSportWorker),
+
 ];
 
 export default function* rootSaga() {

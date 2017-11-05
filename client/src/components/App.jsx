@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { Grid, Form, Button, Input } from 'semantic-ui-react';
+import { Grid, Form, Button } from 'semantic-ui-react';
 import SportsTable from './SportsTable';
-import { fetchSports, deleteSport, addSport } from '../actions/sports';
+import { fetchSports, deleteSport, addSport, updateSport } from '../actions/sports';
 import '../css/styles.css';
 
 const propTypes = {
@@ -23,7 +23,7 @@ class App extends React.Component {
       activityName: '',
       date: moment(),
       duration: '',
-      details: '',
+      comments: '',
     };
   }
 
@@ -35,6 +35,10 @@ class App extends React.Component {
     this.props.deleteSport(sport);
   }
 
+  handleUpdateComments = (sport) => {
+    this.props.updateSport(sport);
+  }
+
   handleOnChange = (e, { name, value }) => {
     this.setState({ [name]: value });
   }
@@ -44,7 +48,7 @@ class App extends React.Component {
       activityName: this.state.activityName,
       date: new Date(this.state.date),
       duration: this.state.duration,
-      details: this.state.details,
+      comments: this.state.comments,
     };
     this.props.addSport(sport);
   }
@@ -53,11 +57,12 @@ class App extends React.Component {
     return (
       <div className="main-container">
         <Grid>
-          <Grid.Column width={9}>
+          <Grid.Column width={10}>
             {this.props.sports.length > 0 &&
               <SportsTable
                 sports={this.props.sports}
                 deleteRow={this.handleDeleteRow}
+                updateComments={this.handleUpdateComments}
               />
             }
           </Grid.Column>
@@ -90,10 +95,10 @@ class App extends React.Component {
                 />
               </Form.Group>
               <Form.TextArea
-                label="Details"
-                placeholder="Details"
-                name="details"
-                value={this.state.details}
+                label="Comments"
+                placeholder="Comments"
+                name="comments"
+                value={this.state.comments}
                 onChange={this.handleOnChange}
               />
               <Button type="submit" color="teal">Save</Button>
@@ -119,6 +124,9 @@ export default connect(
     },
     addSport(sport) {
       dispatch(addSport(sport));
+    },
+    updateSport(sport) {
+      dispatch(updateSport(sport));
     },
   }),
 )(App);

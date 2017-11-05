@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Icon } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import SportRow from './SportRow';
 
 const SportsTable = (props) => {
@@ -8,6 +8,7 @@ const SportsTable = (props) => {
       key={sport._id}
       sport={sport}
       deleteRow={props.deleteRow}
+      updateComments={props.updateComments}
     />
   ));
 
@@ -18,7 +19,7 @@ const SportsTable = (props) => {
           <Table.HeaderCell>Sport activity</Table.HeaderCell>
           <Table.HeaderCell>Date</Table.HeaderCell>
           <Table.HeaderCell>Duration</Table.HeaderCell>
-          <Table.HeaderCell>Details</Table.HeaderCell>
+          <Table.HeaderCell>Comments</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
       <Table.Body>

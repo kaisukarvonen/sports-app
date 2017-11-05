@@ -8,7 +8,7 @@ const router = express.Router();
 
 /* GET users listing. */
 router.get('/all', (req, res) => {
-  Sport.find({}, (err, users) => {
+  Sport.find({}).sort('date').exec((err, users) => {
     if (err) throw err;
     // console.log(users);
     res.json(users);
@@ -17,14 +17,21 @@ router.get('/all', (req, res) => {
 
 router.put('/add', (req, res) => {
   const activity = new Sport({
-    _id: new ObjectId(),
     name: req.body.activityName,
     date: req.body.date,
     duration: req.body.duration,
-    comments: req.body.details,
+    comments: req.body.comments,
   });
 
   activity.save((err) => {
+    if (err) res.sendStatus(500);
+    res.sendStatus(200);
+  });
+});
+
+
+router.put('/update', (req, res) => {
+  Sport.findOneAndUpdate({ _id: req.body.id }, { comments: req.body.comments }, (err, sport) => {
     if (err) res.sendStatus(500);
     res.sendStatus(200);
   });
