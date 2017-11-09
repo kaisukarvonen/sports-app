@@ -13,10 +13,15 @@ import '../css/styles.css';
 const propTypes = {
   sports: PropTypes.array,
   fetchSports: PropTypes.func.isRequired,
+  deleteSport: PropTypes.func.isRequired,
+  addSport: PropTypes.func.isRequired,
+  updateSport: PropTypes.func.isRequired,
+  message: PropTypes.object,
 };
 
 const defaultProps = {
   sports: [],
+  message: {},
 };
 
 class App extends React.Component {
@@ -40,8 +45,12 @@ class App extends React.Component {
     if (this.props.sports !== nextProps.sports) {
       this.setState({ filteredData: nextProps.sports });
     }
-    if (nextProps.error) {
-      toast.error(nextProps.error);
+    if (nextProps.message && nextProps.message !== this.props.message) {
+      if (nextProps.message.error) {
+        toast.error(nextProps.message.value);
+      } else {
+        toast.success(nextProps.message.value);
+      }
     }
   }
 
@@ -167,7 +176,7 @@ class App extends React.Component {
 export default connect(
   state => ({
     sports: state.sports.sports,
-    error: state.sports.error,
+    message: state.sports.message,
   }),
   dispatch => ({
     fetchSports() {
