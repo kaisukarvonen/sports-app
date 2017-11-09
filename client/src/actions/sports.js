@@ -1,6 +1,6 @@
 export const FETCH_SPORTS = 'FETCH_SPORTS';
 export const FETCHED_SPORTS = 'FETCHED_SPORTS';
-export const SPORTS_ERROR = 'SPORTS_ERROR';
+export const SPORTS_MESSAGE = 'SPORTS_MESSAGE';
 export const DELETE_SPORT = 'DELETE_SPORT';
 export const DELETED_SPORT = 'DELETED_SPORT';
 export const ADD_SPORT = 'ADD_SPORT';
@@ -49,10 +49,10 @@ export function fetchedSports(sports) {
   };
 }
 
-export function fetchError(errMessage) {
+export function fetchMessage(message) {
   return {
-    type: SPORTS_ERROR,
-    errMessage,
+    type: SPORTS_MESSAGE,
+    message,
   };
 }
 

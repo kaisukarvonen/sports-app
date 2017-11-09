@@ -11,9 +11,9 @@ function sports(state = {}, action) {
       return Object.assign({}, state, {
         sports: action.sports,
       });
-    case actions.SPORTS_ERROR:
+    case actions.SPORTS_MESSAGE:
       return Object.assign({}, state, {
-        error: action.errMessage,
+        message: action.message,
       });
     case actions.DELETED_SPORT:
       const newState = Object.assign({}, state);
