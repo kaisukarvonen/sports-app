@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { Grid, Form, Button } from 'semantic-ui-react';
+import Fuse from 'fuse.js';
+import { Grid, Form, Button, Input } from 'semantic-ui-react';
 import SportsTable from './SportsTable';
 import { fetchSports, deleteSport, addSport, updateSport } from '../actions/sports';
 import '../css/styles.css';
@@ -24,11 +25,18 @@ class App extends React.Component {
       date: moment(),
       duration: '',
       comments: '',
+      filteredData: [],
+      filterValue: '',
     };
   }
 
   componentDidMount() {
     this.props.fetchSports();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.props.sports !== nextProps.sports &&
+      this.setState({ filteredData: nextProps.sports });
   }
 
   handleDeleteRow = (sport) => {
@@ -53,14 +61,42 @@ class App extends React.Component {
     this.props.addSport(sport);
   }
 
+  filterData = (e) => {
+    this.setState({ filterValue: e.target.value });
+    const options = {
+      shouldSort: true,
+      threshold: 0.3,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 20,
+      minMatchCharLength: 1,
+      keys: [
+        'name',
+      ],
+    };
+    const fuse = new Fuse(this.state.filteredData, options);
+    let result = fuse.search(e.target.value);
+    if (result.length < 1) {
+      result = this.props.sports;
+    }
+    this.setState({ filteredData: result });
+}
+
   render() {
     return (
       <div className="main-container">
         <Grid>
           <Grid.Column width={10}>
-            {this.props.sports.length > 0 &&
+            <Input
+              placeholder="Filter activities by name..."
+              icon="search"
+              value={this.state.filterValue}
+              onChange={this.filterData}
+              fluid
+            />
+            {this.state.filteredData.length > 0 &&
               <SportsTable
-                sports={this.props.sports}
+                sports={this.state.filteredData}
                 deleteRow={this.handleDeleteRow}
                 updateComments={this.handleUpdateComments}
               />
