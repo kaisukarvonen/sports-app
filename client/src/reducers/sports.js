@@ -11,19 +11,19 @@ function sports(state = {}, action) {
       return Object.assign({}, state, {
         sports: action.sports,
       });
-    case actions.FETCH_SPORTS_ERROR:
+    case actions.SPORTS_ERROR:
       return Object.assign({}, state, {
         error: action.errMessage,
       });
-    case actions.DELETE_SPORT:
+    case actions.DELETED_SPORT:
       const newState = Object.assign({}, state);
       const indexOfSportToDelete = state.sports.findIndex(sport =>
         sport._id === action.sport._id);
       newState.sports.splice(indexOfSportToDelete, 1);
       return newState;
-    case actions.ADD_SPORT:
+    case actions.ADDED_SPORT:
       return Object.assign({}, state, state.sports.push(action.sport));
-    case actions.UPDATE_SPORT:
+    case actions.UPDATED_SPORT:
       return state.sports.map((sport) => {
         if (sport._id !== action.sport._id) {
           return sport;

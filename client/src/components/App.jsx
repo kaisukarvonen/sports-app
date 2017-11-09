@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
+import { ToastContainer, toast } from 'react-toastify';
 import { Grid, Form, Button, Input } from 'semantic-ui-react';
+import 'react-toastify/dist/ReactToastify.min.css';
 import SportsTable from './SportsTable';
 import { fetchSports, deleteSport, addSport, updateSport } from '../actions/sports';
 import '../css/styles.css';
@@ -23,7 +25,7 @@ class App extends React.Component {
     this.state = {
       activityName: '',
       date: moment(),
-      duration: '',
+      duration: 1,
       comments: '',
       filteredData: [],
       filterValue: '',
@@ -35,8 +37,12 @@ class App extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.sports !== nextProps.sports &&
+    if (this.props.sports !== nextProps.sports) {
       this.setState({ filteredData: nextProps.sports });
+    }
+    if (nextProps.error) {
+      toast.error(nextProps.error);
+    }
   }
 
   handleDeleteRow = (sport) => {
@@ -58,7 +64,11 @@ class App extends React.Component {
       duration: this.state.duration,
       comments: this.state.comments,
     };
-    this.props.addSport(sport);
+    if (sport.activityName === '' || sport.duration == 0) {
+      toast.error('Please fill out all mandatory fields!');
+    } else {
+      this.props.addSport(sport);
+    }
   }
 
   filterData = (e) => {
@@ -80,11 +90,19 @@ class App extends React.Component {
       result = this.props.sports;
     }
     this.setState({ filteredData: result });
-}
+  }
 
   render() {
+    //console.log(this.props.sports);
     return (
       <div className="main-container">
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+        />
         <Grid>
           <Grid.Column width={10}>
             <Input
@@ -105,7 +123,7 @@ class App extends React.Component {
           <Grid.Column width={6}>
             <Form onSubmit={this.handleFormSubmit}>
               <Form.Input
-                label="Sport activity"
+                label="Sport activity *"
                 placeholder="Activity name"
                 name="activityName"
                 value={this.state.activityName}
@@ -113,14 +131,14 @@ class App extends React.Component {
               />
               <Form.Group widths="equal">
                 <Form.Input
-                  label="Date"
+                  label="Date *"
                   icon="calendar"
                   name="date"
                   value={this.state.date.format('DD.MM.YYYY')}
                   onChange={this.handleOnChange}
                 />
                 <Form.Input
-                  label="Duration (hrs)"
+                  label="Duration (hrs) *"
                   placeholder="Duration"
                   type="number"
                   min={0}

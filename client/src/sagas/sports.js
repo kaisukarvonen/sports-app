@@ -22,6 +22,7 @@ function* addSportWorker(action) {
   try {
     const response = yield call(addSport, action);
     if (response.status === 200) {
+      yield put(actions.addedSport());
       yield put(actions.fetchSports());
     } else {
       yield put(actions.fetchError('Adding new activity failed'));
@@ -35,6 +36,7 @@ function* updateSportWorker(action) {
   try {
     const response = yield call(updateSport, action);
     if (response.status === 200) {
+      yield put(actions.updatedSport());
       yield put(actions.fetchSports());
     } else {
       yield put(actions.fetchError('Updating activity failed'));
@@ -48,6 +50,7 @@ function* deleteSportWorker(action) {
   try {
     const response = yield call(deleteSport, action);
     if (response.status === 200) {
+      yield put(actions.deletedSport());
       yield put(actions.fetchSports());
     } else {
       yield put(actions.fetchError('Deleting activity failed'));

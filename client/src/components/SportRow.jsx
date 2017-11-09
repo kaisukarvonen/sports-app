@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Icon, TextArea, Form } from 'semantic-ui-react';
+
 import moment from 'moment';
 
 class SportRow extends React.Component {
@@ -27,6 +28,7 @@ class SportRow extends React.Component {
     const updatedSport = Object.assign({}, this.props.sport,
       { comments: this.state.commentsValue });
     this.props.updateComments(updatedSport);
+    this.changeEditMode();
   }
 
   render() {

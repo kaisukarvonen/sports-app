@@ -10,7 +10,6 @@ export function fetchSports() {
 }
 
 export function addSport(action) {
-  console.log(action.sport);
   const promise =
     axios.put('/sports/add/', {
       activityName: action.sport.activityName,
