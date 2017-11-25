@@ -1,12 +1,10 @@
 import express from 'express';
-import { ObjectId } from 'mongodb';
 import Sport from '../models/sport';
 
 const router = express.Router();
 
 //  base path: /sports
 
-/* GET users listing. */
 router.get('/all', (req, res) => {
   Sport.find({}).sort('date').exec((err, users) => {
     if (err) throw err;

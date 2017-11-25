@@ -36,11 +36,11 @@ class SportRow extends React.Component {
 
     return (
       <Table.Row>
-        <Table.Cell>{sport.name}</Table.Cell>
-        <Table.Cell>{moment(sport.date).format('DD.MM.YYYY')}</Table.Cell>
-        <Table.Cell>{`${sport.duration} hours`}</Table.Cell>
+        <Table.Cell width={3}>{sport.name}</Table.Cell>
+        <Table.Cell width={3}>{moment(sport.date).format('DD.MM.YYYY')}</Table.Cell>
+        <Table.Cell width={2}>{`${sport.duration} hours`}</Table.Cell>
         { !this.state.editMode ?
-          <Table.Cell>
+          <Table.Cell width={8}>
             {sport.comments}
             <Icon
               name="edit"
@@ -56,7 +56,7 @@ class SportRow extends React.Component {
             />
           </Table.Cell>
           :
-          <Table.Cell>
+          <Table.Cell width={8}>
             <Form>
               <TextArea
                 value={this.state.commentsValue}

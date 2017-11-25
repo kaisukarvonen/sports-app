@@ -13,7 +13,7 @@ const SportsTable = (props) => {
   ));
 
   return (
-    <Table celled>
+    <Table basic="very" style={{ padding: '12px 0 0 7px' }}>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Sport activity</Table.HeaderCell>

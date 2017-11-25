@@ -8,6 +8,7 @@ export const ADDED_SPORT = 'ADDED_SPORT';
 export const UPDATE_SPORT = 'UPDATE_SPORT';
 export const UPDATED_SPORT = 'UPDATED_SPORT';
 
+
 export function fetchSports() {
   return {
     type: FETCH_SPORTS,

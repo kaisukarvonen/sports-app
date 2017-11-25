@@ -69,8 +69,4 @@ const sportSagas = [
 
 ];
 
-export default function* rootSaga() {
-  yield [
-    sportSagas,
-  ];
-}
+export default sportSagas;

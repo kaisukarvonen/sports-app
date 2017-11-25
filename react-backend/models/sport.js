@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
-
-const sportSchema = new Schema({
+const sportSchema = new mongoose.Schema({
   name: String,
   date: Date,
   duration: Number,

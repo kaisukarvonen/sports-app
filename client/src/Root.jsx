@@ -6,7 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from './components/App';
 import Login from './components/Login';
-import rootSaga from './sagas/sports';
+import rootSaga from './sagas/rootSaga';
 import rootReducer from './reducers/sports';
 
 
