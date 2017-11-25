@@ -4,7 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
 import { ToastContainer, toast } from 'react-toastify';
-import { Grid, Form, Button, Input } from 'semantic-ui-react';
+import { Grid, Form, Button, Input, Message, Header } from 'semantic-ui-react';
 import 'react-toastify/dist/ReactToastify.min.css';
 import SportsTable from './SportsTable';
 import { fetchSports, deleteSport, addSport, updateSport } from '../actions/sports';
@@ -102,34 +102,37 @@ class App extends React.Component {
   }
 
   render() {
-    //console.log(this.props.sports);
+    // console.log(this.props.sports);
     return (
       <div className="main-container">
         <ToastContainer
           position="top-center"
           autoClose={2500}
-          hideProgressBar={true}
+          hideProgressBar
           newestOnTop={false}
           closeOnClick
         />
         <Grid>
-          <Grid.Column width={10}>
-            <Input
-              placeholder="Filter activities by name..."
-              icon="search"
-              value={this.state.filterValue}
-              onChange={this.filterData}
-              fluid
-            />
-            {this.state.filteredData.length > 0 &&
+          <Grid.Column width={9}>
+            <Message style={{ padding: '17px' }}>
+              <Input
+                placeholder="Filter activities by name..."
+                icon="search"
+                value={this.state.filterValue}
+                onChange={this.filterData}
+                fluid
+              />
+              {this.state.filteredData.length > 0 &&
               <SportsTable
                 sports={this.state.filteredData}
                 deleteRow={this.handleDeleteRow}
                 updateComments={this.handleUpdateComments}
               />
             }
+            </Message>
           </Grid.Column>
-          <Grid.Column width={6}>
+          <Grid.Column width={7}>
+            <Header as="h3">Add new sports activity</Header>
             <Form onSubmit={this.handleFormSubmit}>
               <Form.Input
                 label="Sport activity *"

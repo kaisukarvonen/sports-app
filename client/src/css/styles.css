@@ -1,4 +1,20 @@
 .main-container {
   max-width: 98%;
-  margin: 14px;
+  padding: 22px 0 0 8px;
+  overflow: hidden;
+}
+
+
+body {
+  background-color: #e4efef;
+}
+
+.login-frame {
+  margin-top: 60px;
+
+}
+
+.login-card {
+  width:45%;
+  min-width:400px;
 }
