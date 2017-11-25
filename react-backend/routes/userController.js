@@ -3,7 +3,7 @@ import User from '../models/user';
 
 const router = express.Router();
 
-//base path /user
+// base path /user
 
 router.put('/register', (req, res) => {
   const user = new User({
@@ -22,13 +22,27 @@ router.put('/register', (req, res) => {
 
 router.put('/login', (req, res) => {
   User.authenticate(req.body.username, req.body.password, (error, user) => {
-      if (error || !user) {
+    if (error || !user) {
+      res.sendStatus(500);
+    } else {
+      req.session.userId = user._id;
+      res.sendStatus(200);
+    }
+  });
+});
+
+
+router.get('/logout', (req, res) => {
+  if (req.session) {
+    // delete session object
+    req.session.destroy((err) => {
+      if (err) {
         res.sendStatus(500);
       } else {
-        req.session.userId = user._id;
         res.sendStatus(200);
       }
     });
+  }
 });
 
 export default router;
