@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 import { Grid, Form, Button, Input, Header, Card, Message } from 'semantic-ui-react';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../css/styles.css';
@@ -16,10 +17,10 @@ import { loginUser } from '../actions/users';
 //   message: PropTypes.object,
 // };
 //
-// const defaultProps = {
-//   sports: [],
-//   message: {},
-// };
+const defaultProps = {
+  message: {},
+  validUser: false,
+};
 
 class Login extends React.Component {
   constructor(props) {
@@ -28,6 +29,15 @@ class Login extends React.Component {
       username: '',
       password: '',
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    if (nextProps.message && nextProps.message !== this.props.message) {
+      toast.error(nextProps.message.value);
+    } else if (nextProps.validUser) {
+      this.props.history.push('/');
+    }
   }
 
   handleOnChange = (e, { name, value }) => {
@@ -88,13 +98,16 @@ class Login extends React.Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     message: state.sports.message,
+    validUser: state.users.validUser,
   }),
   dispatch => ({
     loginUser(user) {
       dispatch(loginUser(user));
     },
   }),
-)(Login);
+)(Login));
+
+Login.defaultProps = defaultProps;

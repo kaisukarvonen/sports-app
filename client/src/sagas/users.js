@@ -8,9 +8,9 @@ import { fetchMessage } from '../actions/sports';
 function* loginUserWorker(action) {
   try {
     const response = yield call(loginUser, action);
+    console.log(response);
     if (response.status === 200) {
-      console.log('succesful');
-      //yield put(actions.fetchedSports(response.data));
+      yield put(actions.loginSuccess());
     } else {
       yield put(fetchMessage({ value: 'Username and password do not match', error: true }));
     }
@@ -21,7 +21,6 @@ function* loginUserWorker(action) {
 
 const userSagas = [
   takeLatest(actions.LOGIN_USER, loginUserWorker),
-
 ];
 
 export default userSagas;

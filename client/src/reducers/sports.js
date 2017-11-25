@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import * as actions from '../actions/sports';
 
 const defaultState = {
@@ -34,9 +33,4 @@ function sports(state = {}, action) {
       return Object.assign({}, defaultState, state);
   }
 }
-
-
-const rootReducer = combineReducers({
-  sports,
-});
-export default rootReducer;
+export default sports;
