@@ -5,6 +5,7 @@ const sportSchema = new mongoose.Schema({
   date: Date,
   duration: Number,
   comments: String,
+  user_id: String,
 });
 
 const Sport = mongoose.model('Sport', sportSchema);

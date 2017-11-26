@@ -3,11 +3,9 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import App from './components/App';
-import Login from './components/Login';
 import rootSaga from './sagas/rootSaga';
-import rootReducer from './reducers/sports';
+import rootReducer from './reducers/rootReducer';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -22,12 +20,7 @@ sagaMiddleware.run(rootSaga);
 const Root = () => (
   <div>
     <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={App} />
-          <Route path="/login" component={Login} />
-        </Switch>
-      </Router>
+      <App />
     </Provider>
   </div>
 );
