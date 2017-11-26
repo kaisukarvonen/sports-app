@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import Fuse from 'fuse.js';
 import { ToastContainer, toast } from 'react-toastify';
 import { Grid, Form, Button, Input, Message, Header } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import SportsTable from './SportsTable';
 import { fetchSports, deleteSport, addSport, updateSport } from '../actions/sports';
+import { logout } from '../actions/users';
 import '../css/styles.css';
 
 const propTypes = {
@@ -51,6 +53,9 @@ class SportsPage extends React.Component {
       } else {
         toast.success(nextProps.message.value);
       }
+    }
+    if (nextProps.loggedOut) {
+      this.props.history.push('/login');
     }
   }
 
@@ -101,10 +106,15 @@ class SportsPage extends React.Component {
     this.setState({ filteredData: result });
   }
 
+  logout = () => {
+    this.props.logout();
+  }
+
   render() {
-     console.log(this.props.sports);
+    //console.log(this.props.sports);
     return (
       <div className="main-container">
+
         <ToastContainer
           position="top-center"
           autoClose={2500}
@@ -132,6 +142,14 @@ class SportsPage extends React.Component {
             </Message>
           </Grid.Column>
           <Grid.Column width={7}>
+            <Button
+              content="Log out"
+              color="teal"
+              icon="sign out"
+              labelPosition="right"
+              floated="right"
+              onClick={this.logout}
+            />
             <Header as="h3">Add new sports activity</Header>
             <Form onSubmit={this.handleFormSubmit}>
               <Form.Input
@@ -176,10 +194,11 @@ class SportsPage extends React.Component {
   }
 }
 
-export default connect(
+export default withRouter(connect(
   state => ({
     sports: state.sports.sports,
     message: state.sports.message,
+    loggedOut: state.users.loggedOut,
   }),
   dispatch => ({
     fetchSports() {
@@ -194,8 +213,11 @@ export default connect(
     updateSport(sport) {
       dispatch(updateSport(sport));
     },
+    logout() {
+      dispatch(logout());
+    },
   }),
-)(SportsPage);
+)(SportsPage));
 
 SportsPage.propTypes = propTypes;
 SportsPage.defaultProps = defaultProps;

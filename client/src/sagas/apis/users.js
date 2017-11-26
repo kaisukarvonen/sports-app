@@ -11,3 +11,12 @@ export function loginUser(action) {
 
   return promise;
 }
+
+export function logoutUser() {
+  const promise =
+    axios.get('/user/logout')
+      .then(response => response)
+      .catch(error => error);
+
+  return promise;
+}

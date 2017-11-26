@@ -14,8 +14,11 @@ router.put('/register', (req, res) => {
   });
   console.log(req.body);
   user.save((err) => {
-    if (err) res.sendStatus(500);
-    res.sendStatus(200);
+    if (err) {
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
   });
 });
 
@@ -26,15 +29,26 @@ router.put('/login', (req, res) => {
       res.sendStatus(500);
     } else {
       req.session.userId = user._id;
+      console.log('login');
       res.sendStatus(200);
     }
   });
 });
 
+router.get('/authenticate', (req, res) => {
+  if (req.session && req.session.userId) {
+    console.log('is logged in');
+    res.sendStatus(200);
+  } else {
+    console.log('not logged in');
+    res.sendStatus(500);
+  }
+});
 
 router.get('/logout', (req, res) => {
   if (req.session) {
     // delete session object
+    console.log('destroy');
     req.session.destroy((err) => {
       if (err) {
         res.sendStatus(500);

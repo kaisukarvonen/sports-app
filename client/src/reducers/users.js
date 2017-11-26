@@ -1,18 +1,23 @@
 import * as actions from '../actions/users';
 
 const defaultState = {
-  validUser: false,
+  loggedIn: false,
 };
 
 function users(state = {}, action) {
   switch (action.type) {
     case actions.LOGIN_USER:
       return Object.assign({}, state, {
-        validUser: false,
+        loggedIn: false,
       });
     case actions.LOGIN_SUCCESS:
       return Object.assign({}, state, {
-        validUser: true,
+        loggedIn: true,
+      });
+    case actions.LOGOUT_SUCCESS:
+      return Object.assign({}, state, {
+        loggedOut: true,
+        loggedIn: false,
       });
     default:
       return Object.assign({}, defaultState, state);

@@ -19,7 +19,7 @@ import { loginUser } from '../actions/users';
 //
 const defaultProps = {
   message: {},
-  validUser: false,
+  loggedIn: false,
 };
 
 class Login extends React.Component {
@@ -35,7 +35,8 @@ class Login extends React.Component {
     console.log(nextProps);
     if (nextProps.message && nextProps.message !== this.props.message) {
       toast.error(nextProps.message.value);
-    } else if (nextProps.validUser) {
+    } else if (nextProps.loggedIn) {
+      console.log('logged in');
       this.props.history.push('/');
     }
   }
@@ -101,7 +102,7 @@ class Login extends React.Component {
 export default withRouter(connect(
   state => ({
     message: state.sports.message,
-    validUser: state.users.validUser,
+    loggedIn: state.users.loggedIn,
   }),
   dispatch => ({
     loginUser(user) {
