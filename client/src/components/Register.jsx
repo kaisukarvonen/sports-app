@@ -2,42 +2,30 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { withRouter, Link } from 'react-router-dom';
-import { Grid, Form, Button, Input, Header, Card, Message } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
+import { Grid, Form, Button, Header, Message } from 'semantic-ui-react';
 import 'react-toastify/dist/ReactToastify.min.css';
 import '../css/styles.css';
-import { loginUser } from '../actions/users';
+import { registerUser } from '../actions/users';
 
-// const propTypes = {
-//   sports: PropTypes.array,
-//   fetchSports: PropTypes.func.isRequired,
-//   deleteSport: PropTypes.func.isRequired,
-//   addSport: PropTypes.func.isRequired,
-//   updateSport: PropTypes.func.isRequired,
-//   message: PropTypes.object,
-// };
-//
-const defaultProps = {
-  message: {},
-  loggedIn: false,
-};
 
-class Login extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
+      firstname: '',
+      lastname: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
-    if (nextProps.message && nextProps.message !== this.props.message) {
+    if (nextProps.message && nextProps.message.error) {
       toast.error(nextProps.message.value);
-    } else if (nextProps.loggedIn) {
-      console.log('logged in');
-      this.props.history.push('/');
+    } else if (nextProps.registerSuccess) {
+      this.props.history.push('/login');
     }
   }
 
@@ -49,11 +37,13 @@ class Login extends React.Component {
     const user = {
       username: this.state.username,
       password: this.state.password,
+      firstname: this.state.firstname,
+      lastname: this.state.lastname,
     };
     if (user.username === '' || user.password === '') {
-      toast.error('Please fill out both fields!');
+      toast.error('Please fill out all mandatory fields!');
     } else {
-      this.props.loginUser(user);
+      this.props.registerUser(user);
       console.log(user);
     }
   }
@@ -71,30 +61,35 @@ class Login extends React.Component {
         />
         <Grid centered textAlign="center">
           <Message className="login-card">
-            <Header as="h2" style={{ padding: '12px' }}>Sports App</Header>
+            <Header as="h2" style={{ padding: '12px' }}>Register</Header>
             <Form onSubmit={this.handleFormSubmit} style={{ padding: '7px' }}>
               <Form.Input
-                placeholder="Username"
-                icon="user"
+                placeholder="Username *"
                 name="username"
-                iconPosition="left"
                 value={this.state.username}
                 onChange={this.handleOnChange}
               />
               <Form.Input
-                placeholder="Password"
-                icon="lock"
+                placeholder="Firstname"
+                name="firstname"
+                value={this.state.firstname}
+                onChange={this.handleOnChange}
+              />
+              <Form.Input
+                placeholder="Lastname"
+                name="lastname"
+                value={this.state.lastname}
+                onChange={this.handleOnChange}
+              />
+              <Form.Input
+                placeholder="Password *"
                 name="password"
-                iconPosition="left"
                 type="password"
                 value={this.state.password}
                 onChange={this.handleOnChange}
               />
-              <Button fluid type="submit" color="teal">Login</Button>
+              <Button fluid type="submit" color="teal">Register</Button>
             </Form>
-            <p style={{ padding: '6px' }}>
-              <Link to="/register">Create new user account</Link>
-            </p>
           </Message>
         </Grid>
       </div>
@@ -105,13 +100,11 @@ class Login extends React.Component {
 export default withRouter(connect(
   state => ({
     message: state.sports.message,
-    loggedIn: state.users.loggedIn,
+    registerSuccess: state.users.registerSuccess,
   }),
   dispatch => ({
-    loginUser(user) {
-      dispatch(loginUser(user));
+    registerUser(user) {
+      dispatch(registerUser(user));
     },
   }),
-)(Login));
-
-Login.defaultProps = defaultProps;
+)(Register));

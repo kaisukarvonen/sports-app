@@ -2,6 +2,7 @@ import * as actions from '../actions/users';
 
 const defaultState = {
   loggedIn: false,
+  registerSuccess: false,
 };
 
 function users(state = {}, action) {
@@ -18,6 +19,10 @@ function users(state = {}, action) {
       return Object.assign({}, state, {
         loggedOut: true,
         loggedIn: false,
+      });
+    case actions.REGISTER_SUCCESS:
+      return Object.assign({}, state, {
+        registerSuccess: true,
       });
     default:
       return Object.assign({}, defaultState, state);

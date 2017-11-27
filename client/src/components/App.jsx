@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import { connect } from 'react-redux';
 import Login from './Login';
 import SportsPage from './SportsPage';
+import Register from './Register';
 
 
 const App = (props) => {
@@ -19,6 +20,7 @@ const App = (props) => {
           )}
         />
         <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
       </Switch>
     </Router>
   );

@@ -6,18 +6,26 @@ const router = express.Router();
 // base path /user
 
 router.put('/register', (req, res) => {
-  const user = new User({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    username: req.body.username,
-    password: req.body.password,
-  });
-  console.log(req.body);
-  user.save((err) => {
-    if (err) {
+  User.find({"username": req.body.username }).exec((err, users) => {
+    if (err) throw err;
+    // console.log(users);
+    if (users.count > 0) {
       res.sendStatus(500);
     } else {
-      res.sendStatus(200);
+      const user = new User({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.username,
+        password: req.body.password,
+      });
+      console.log(req.body);
+      user.save((error) => {
+        if (error) {
+          res.sendStatus(500);
+        } else {
+          res.sendStatus(200);
+        }
+      });
     }
   });
 });

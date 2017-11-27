@@ -20,3 +20,17 @@ export function logoutUser() {
 
   return promise;
 }
+
+export function registerUser(action) {
+  const promise =
+    axios.put('/user/register', {
+      username: action.user.username,
+      password: action.user.password,
+      firstname: action.user.firstname,
+      lastname: action.user.lastname,
+    })
+      .then(response => response)
+      .catch(error => error);
+
+  return promise;
+}
