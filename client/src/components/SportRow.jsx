@@ -4,13 +4,10 @@ import { Table, Icon, TextArea, Form } from 'semantic-ui-react';
 import moment from 'moment';
 
 class SportRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      commentsValue: this.props.sport.comments,
-      editMode: false,
-    };
-  }
+  state = {
+    commentsValue: this.props.sport.comments,
+    editMode: false,
+  };
 
   handleDeleteRow = () => {
     this.props.deleteRow(this.props.sport);
@@ -20,13 +17,17 @@ class SportRow extends React.Component {
     this.setState({ commentsValue: e.target.value });
   }
 
+  handleUndo = () => {
+    this.setState({ commentsValue: this.props.sport.comments });
+    this.changeEditMode();
+  }
+
   changeEditMode = () => {
     this.setState({ editMode: !this.state.editMode });
   }
 
   saveCommentsChange = () => {
-    const updatedSport = Object.assign({}, this.props.sport,
-      { comments: this.state.commentsValue });
+    const updatedSport = { ...this.props.sport, comments: this.state.commentsValue };
     this.props.updateComments(updatedSport);
     this.changeEditMode();
   }
@@ -43,16 +44,19 @@ class SportRow extends React.Component {
           <Table.Cell width={8}>
             {sport.comments}
             <Icon
-              name="edit"
-              style={{ cursor: 'pointer', paddingLeft: '9px' }}
-              onClick={this.changeEditMode}
-            />
-            <Icon
               circular
               name="remove"
+              size="small"
               color="red"
               onClick={this.handleDeleteRow}
               style={{ float: 'right', cursor: 'pointer' }}
+            />
+            <Icon
+              size="small"
+              circular
+              name="edit"
+              style={{ cursor: 'pointer', float: 'right' }}
+              onClick={this.changeEditMode}
             />
           </Table.Cell>
           :
@@ -68,15 +72,17 @@ class SportRow extends React.Component {
               <Icon
                 circular
                 name="check"
+                size="small"
                 color="green"
                 onClick={this.saveCommentsChange}
-                style={{ float: 'right', cursor: 'pointer', marginTop: '6px' }}
+                style={{ float: 'right', cursor: 'pointer', marginTop: '2px' }}
               />
               <Icon
+                size="small"
                 circular
                 name="undo"
-                onClick={this.changeEditMode}
-                style={{ float: 'right', cursor: 'pointer', marginTop: '6px' }}
+                onClick={this.handleUndo}
+                style={{ float: 'right', cursor: 'pointer', marginTop: '2px' }}
               />
             </Form>
           </Table.Cell>

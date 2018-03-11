@@ -1,7 +1,9 @@
 .main-container {
-  max-width: 98%;
+  width: 90%;
+  max-width: 1000px;
   padding: 22px 0 0 8px;
   overflow: hidden;
+  margin: auto;
 }
 
 
@@ -17,4 +19,22 @@ body {
 .login-card {
   width:45%;
   min-width:400px;
+}
+
+.ui.form textarea {
+  height: 28px;
+  padding: 4px;
+}
+
+.ui.input input {
+  height: 30px;
+}
+
+.ui.dropdown {
+  height: 30px;
+  vertical-align: middle;
+}
+
+.ui.table.activity-list td {
+  height: 38px !important;
 }
