@@ -84,7 +84,7 @@ class AddForm extends React.Component {
                   onDayClick={this.onDateChange}
                   value={this.state.date.toDate()}
                   selectedDays={this.state.date.toDate()}
-                  disabledDays={ {after: new Date()}}
+                  disabledDays={{ after: new Date() }}
                 />
              }
             />
