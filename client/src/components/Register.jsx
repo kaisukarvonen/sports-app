@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { withRouter } from 'react-router-dom';
 import { Grid, Form, Button, Header, Message } from 'semantic-ui-react';
-import 'react-toastify/dist/ReactToastify.min.css';
-import '../css/styles.css';
-import { registerUser } from '../actions/users';
 
 
 class Register extends React.Component {
@@ -97,14 +92,4 @@ class Register extends React.Component {
   }
 }
 
-export default withRouter(connect(
-  state => ({
-    message: state.sports.message,
-    registerSuccess: state.users.registerSuccess,
-  }),
-  dispatch => ({
-    registerUser(user) {
-      dispatch(registerUser(user));
-    },
-  }),
-)(Register));
+export default Register;

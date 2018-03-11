@@ -1,22 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { withRouter, Link } from 'react-router-dom';
-import { Grid, Form, Button, Input, Header, Card, Message } from 'semantic-ui-react';
-import 'react-toastify/dist/ReactToastify.min.css';
-import '../css/styles.css';
-import { loginUser } from '../actions/users';
+import { Link } from 'react-router-dom';
+import { Grid, Form, Button, Input, Header, Message } from 'semantic-ui-react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as userActions from '../dux/users';
 
-// const propTypes = {
-//   sports: PropTypes.array,
-//   fetchSports: PropTypes.func.isRequired,
-//   deleteSport: PropTypes.func.isRequired,
-//   addSport: PropTypes.func.isRequired,
-//   updateSport: PropTypes.func.isRequired,
-//   message: PropTypes.object,
-// };
-//
+
 const defaultProps = {
   message: {},
   loggedIn: false,
@@ -32,7 +23,7 @@ class Login extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
+    console.log('receive props');
     if (nextProps.message && nextProps.message !== this.props.message) {
       toast.error(nextProps.message.value);
     } else if (nextProps.loggedIn) {
@@ -59,6 +50,7 @@ class Login extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     // kaisuk: password
     return (
       <div className="login-frame">
@@ -101,17 +93,14 @@ class Login extends React.Component {
     );
   }
 }
+Login.defaultProps = defaultProps;
 
-export default withRouter(connect(
+export default connect(
   state => ({
     message: state.sports.message,
     loggedIn: state.users.loggedIn,
   }),
-  dispatch => ({
-    loginUser(user) {
-      dispatch(loginUser(user));
-    },
-  }),
-)(Login));
-
-Login.defaultProps = defaultProps;
+  dispatch => (bindActionCreators({
+    ...userActions,
+  }, dispatch)),
+)(Login);
