@@ -1,5 +1,5 @@
-import sportSagas from './sports';
-import userSagas from './users';
+import { sportSagas } from './sports';
+import { userSagas } from './users';
 
 
 export default function* rootSaga() {
