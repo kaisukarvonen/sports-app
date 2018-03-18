@@ -9,38 +9,36 @@ import Register from './Register';
 import '../css/styles.css';
 
 
-const App = props => (
-  <Router>
-    <Switch>
-      <Route
-        exact
-        path="/"
-        render={() => (
-              // !props.loggedIn ? (
-              //   <Redirect to="/login" />
-              // ) :
-          <Navigation />
-            )}
-      />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-    </Switch>
-  </Router>
-);
+class App extends React.Component {
+  componentWillMount() {
+    this.props.authenticate();
+  }
 
-// user logs out on page refresh (due to state being initialized)
-
+  render() {
+    console.log(this.props.isAuthenticated);
+    return (
+      <Router>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={
+            !this.props.isAuthenticated ?
+              Login : Navigation
+            }
+          />
+          <Route path="/register" component={Register} />
+        </Switch>
+      </Router>
+    );
+  }
+}
 
 export default connect(
   state => ({
-    loggedIn: state.users.loggedIn,
+    isAuthenticated: state.users.isAuthenticated,
   }),
   dispatch => (bindActionCreators({
     ...userActions,
   }, dispatch)),
 )(App);
-// export default connect(
-//   state => ({
-//     loggedIn: state.users.loggedIn,
-//   })
-// )(App);

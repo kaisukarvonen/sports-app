@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Grid, Form, Button, Input, Header, Message } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -23,12 +23,8 @@ class Login extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('receive props');
     if (nextProps.message && nextProps.message !== this.props.message) {
       toast.error(nextProps.message.value);
-    } else if (nextProps.loggedIn) {
-      console.log('logged in');
-      this.props.history.push('/');
     }
   }
 
@@ -45,12 +41,10 @@ class Login extends React.Component {
       toast.error('Please fill out both fields!');
     } else {
       this.props.loginUser(user);
-      console.log(user);
     }
   }
 
   render() {
-    console.log(this.props);
     // kaisuk: password
     return (
       <div className="login-frame">
@@ -95,7 +89,7 @@ class Login extends React.Component {
 }
 Login.defaultProps = defaultProps;
 
-export default connect(
+export default withRouter(connect(
   state => ({
     message: state.sports.message,
     loggedIn: state.users.loggedIn,
@@ -103,4 +97,4 @@ export default connect(
   dispatch => (bindActionCreators({
     ...userActions,
   }, dispatch)),
-)(Login);
+)(Login));

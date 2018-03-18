@@ -1,5 +1,6 @@
 import * as axios from 'axios';
 
+
 export function loginUser(action) {
   const promise =
     axios.put('/user/login', {
@@ -12,9 +13,13 @@ export function loginUser(action) {
   return promise;
 }
 
-export function logoutUser() {
+export function authenticate() {
   const promise =
-    axios.get('/user/logout')
+    axios.get('/user/authenticate', {
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.token}`,
+      },
+    })
       .then(response => response)
       .catch(error => error);
 

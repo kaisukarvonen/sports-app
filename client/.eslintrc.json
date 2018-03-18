@@ -6,5 +6,9 @@
       "no-case-declarations": "off",
       "react/forbid-prop-types": 0,
       "func-names": "off"
+    },
+    "globals": {
+      "document": true,
+      "window": true
     }
 }

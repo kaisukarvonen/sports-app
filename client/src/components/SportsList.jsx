@@ -43,9 +43,6 @@ class SportsList extends React.Component {
         toast.success(nextProps.message.value);
       }
     }
-    // if (nextProps.loggedOut) {
-    //   this.props.history.push('/login');
-    // }
   }
 
   handleDeleteRow = (sport) => {
@@ -87,7 +84,6 @@ class SportsList extends React.Component {
   }
 
   render() {
-    // console.log(this.props.sports);
     return (
       <div>
         <Grid>

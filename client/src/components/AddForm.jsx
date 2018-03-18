@@ -23,6 +23,16 @@ class AddForm extends React.Component {
     open: false,
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.message && nextProps.message !== this.props.message) {
+      if (nextProps.message.error) {
+        toast.error(nextProps.message.value);
+      } else {
+        toast.success(nextProps.message.value);
+      }
+    }
+  }
+
   onDateChange = (date) => {
     this.setState({ date: moment(date), open: !this.state.open });
   }

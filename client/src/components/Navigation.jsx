@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
@@ -15,42 +16,52 @@ const propTypes = {
 const defaultProps = {
 };
 
-const Navigation = props => (
-  <div className="main-container">
-    <ToastContainer
-      position="top-center"
-      autoClose={2500}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-    />
+class Navigation extends React.Component {
+  logout = () => {
+    delete window.sessionStorage.token;
+  }
 
-    <Tab
-      menu={{ secondary: true, pointing: true }}
-      panes={
-          [
-            { menuItem: 'Activities', render: () => <Tab.Pane attached={false}><SportsList {...props} /></Tab.Pane> },
-            { menuItem: 'Add new', render: () => <Tab.Pane attached={false}><AddForm {...props} /></Tab.Pane> },
-            { menuItem: 'Statistics', render: () => <Tab.Pane attached={false}>Todo</Tab.Pane> },
-          ]
-        }
-    />
-    <Button
-      content="Log out"
-      color="teal"
-      icon="sign out"
-      size="mini"
-      labelPosition="right"
-      onClick={props.logout}
-      style={{ bottom: '20px', margin: '0 auto', position: 'absolute', right: '30px' }}
-    />
-  </div>
-);
+  render() {
+    return (
+      <div className="main-container">
+        <ToastContainer
+          position="top-center"
+          autoClose={2500}
+          hideProgressBar
+          newestOnTop={false}
+          closeOnClick
+        />
+
+        <Tab
+          menu={{ secondary: true, pointing: true }}
+          panes={
+            [
+              { menuItem: 'Activities', render: () => <Tab.Pane attached={false}><SportsList {...this.props} /></Tab.Pane> },
+              { menuItem: 'Add new', render: () => <Tab.Pane attached={false}><AddForm {...this.props} /></Tab.Pane> },
+              { menuItem: 'Statistics', render: () => <Tab.Pane attached={false}>Todo</Tab.Pane> },
+            ]
+          }
+        />
+        <Button
+          content="Log out"
+          color="teal"
+          icon="sign out"
+          size="mini"
+          labelPosition="right"
+          onClick={this.logout}
+          style={{
+            bottom: '20px', margin: '0 auto', position: 'absolute', right: '30px',
+          }}
+        />
+      </div>
+    );
+  }
+}
 
 
 Navigation.propTypes = propTypes;
 Navigation.defaultProps = defaultProps;
-export default connect(
+export default withRouter(connect(
   state => ({
     message: state.sports.message,
     sports: state.sports.sports,
@@ -59,4 +70,4 @@ export default connect(
     ...sportsActions,
     ...userActions,
   }, dispatch)),
-)(Navigation);
+)(Navigation));

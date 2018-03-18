@@ -2,7 +2,11 @@ import * as axios from 'axios';
 
 export function fetchSports() {
   const promise =
-    axios.get('/sports/all')
+    axios.get('/sports/all', {
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.token}`,
+      },
+    })
       .then(response => response)
       .catch(error => error);
 
@@ -16,10 +20,16 @@ export function addSport(action) {
       date: action.sport.date,
       duration: action.sport.duration,
       comments: action.sport.comments,
-    })
-      .then(response => response)
-      .catch(error => error);
-  return promise;
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${window.sessionStorage.token}`,
+      },
+      },
+    )
+    .then(response => response)
+    .catch(error => error);
+    return promise;
 }
 
 
