@@ -1,9 +1,21 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
+import { verifyToken } from '../utils/token';
 import User from '../models/user';
 
 const router = express.Router();
 
-// base path /user
+function generateToken(user) {
+  const u = {
+    firstname: user.firstname,
+    lastname: user.lastname,
+    username: user.username,
+    _id: user._id.toString(),
+  };
+  return jwt.sign(u, process.env.JWT_TOKEN, {
+    expiresIn: 60 * 60 * 24
+  });
+}
 
 router.put('/register', (req, res) => {
   User.find({"username": req.body.username }).exec((err, users) => {
@@ -23,7 +35,8 @@ router.put('/register', (req, res) => {
         if (error) {
           res.sendStatus(500);
         } else {
-          res.sendStatus(200);
+          const token = generateToken(user);
+          res.json({ user, token });
         }
       });
     }
@@ -36,34 +49,20 @@ router.put('/login', (req, res) => {
     if (error || !user) {
       res.sendStatus(500);
     } else {
-      req.session.userId = user._id;
-      console.log('login');
-      res.sendStatus(200);
+      // req.session.userId = user._id;
+      // console.log('login');
+      const token = generateToken(user);
+      res.json({ user, token });
     }
   });
 });
 
 router.get('/authenticate', (req, res) => {
-  if (req.session && req.session.userId) {
-    console.log('is logged in');
-    res.sendStatus(200);
-  } else {
-    console.log('not logged in');
+  if (verifyToken(req.headers['authorization']) === undefined) {
     res.sendStatus(500);
-  }
-});
-
-router.get('/logout', (req, res) => {
-  if (req.session) {
-    // delete session object
-    console.log('destroy');
-    req.session.destroy((err) => {
-      if (err) {
-        res.sendStatus(500);
-      } else {
-        res.sendStatus(200);
-      }
-    });
+  } else {
+    console.log('valid token');
+    res.sendStatus(200);
   }
 });
 

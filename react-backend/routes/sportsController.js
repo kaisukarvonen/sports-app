@@ -1,35 +1,33 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import Sport from '../models/sport';
+import { verifyToken } from '../utils/token';
 
 const router = express.Router();
 //  base path: /sports
 
 router.get('/all', (req, res) => {
-  if (req.session && req.session.userId) {
-    Sport.find({"user_id": req.session.userId }).sort('date').exec((err, sports) => {
-      if (err) throw err;
-      // console.log(users);
-      res.json(sports);
-    });
-  }
+  const user = verifyToken(req.headers['authorization']);
+  Sport.find({"user_id": user._id }).sort('date').exec((err, sports) => {
+    if (err) throw err;
+    res.json(sports);
+  });
 });
 
 router.put('/add', (req, res) => {
-  if (req.session && req.session.userId) {
-    const activity = new Sport({
-      name: req.body.activityName,
-      date: req.body.date,
-      duration: req.body.duration,
-      comments: req.body.comments,
-      user_id: req.session.userId,
-    });
+  const user = verifyToken(req.headers['authorization']);
+  const activity = new Sport({
+    name: req.body.activityName,
+    date: req.body.date,
+    duration: req.body.duration,
+    comments: req.body.comments,
+    user_id: user._id,
+  });
 
-    activity.save((err) => {
-      if (err) res.sendStatus(500);
-      res.sendStatus(200);
-    });
-  }
+  activity.save((err) => {
+    if (err) res.sendStatus(500);
+    res.sendStatus(200);
+  });
 });
 
 
