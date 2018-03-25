@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/all', (req, res) => {
   const user = verifyToken(req.headers['authorization']);
-  Sport.find({"user_id": user._id }).sort('date').exec((err, sports) => {
+  Sport.find({"user_id": user._id }).sort('-date').exec((err, sports) => {
     if (err) throw err;
     res.json(sports);
   });
