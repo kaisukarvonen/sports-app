@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 import SportRow from './SportRow';
 
 const SportsTable = (props) => {
@@ -12,12 +12,13 @@ const SportsTable = (props) => {
     />
   ));
 
+
   return (
     <Table basic="very" compact="very" className="activity-list">
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>Sport activity</Table.HeaderCell>
-          <Table.HeaderCell>Date</Table.HeaderCell>
+          <Table.HeaderCell>Sport activity <Icon link name="sort" onClick={() => props.sortBy('name')} /></Table.HeaderCell>
+          <Table.HeaderCell>Date <Icon link name="sort" onClick={() => props.sortBy('date')} /></Table.HeaderCell>
           <Table.HeaderCell>Duration</Table.HeaderCell>
           <Table.HeaderCell>Comments</Table.HeaderCell>
         </Table.Row>

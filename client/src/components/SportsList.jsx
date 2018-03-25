@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
-import { ToastContainer, toast } from 'react-toastify';
-import { Grid, Form, Button, Input, Message, Header, Dropdown, Tab } from 'semantic-ui-react';
+import { toast } from 'react-toastify';
+import { Grid, Input, Icon, Dropdown } from 'semantic-ui-react';
 import SportsTable from './SportsTable';
 
 const propTypes = {
@@ -24,7 +23,6 @@ class SportsList extends React.Component {
   state = {
     filteredData: [],
     filterValue: '',
-    sortValue: 'date',
   };
 
   componentDidMount() {
@@ -75,45 +73,32 @@ class SportsList extends React.Component {
     this.setState({ filteredData: result });
   }
 
-  logout = () => {
-    this.props.logout();
-  }
-
-  sortData = (e, { value }) => {
-    this.setState({ sortValue: value, filteredData: _.sortBy(this.props.sports, s => s[value]) });
+  sortBy = (category) => {
+    let filtered;
+    if (category === 'date') {
+      filtered = _.orderBy(this.props.sports, s => s[category], ['desc']);
+    } else {
+      filtered = _.sortBy(this.props.sports, s => s[category].toLowerCase());
+    }
+    this.setState({ filteredData: filtered });
   }
 
   render() {
     return (
       <div>
-        <Grid>
-          <Grid.Column width={13}>
-            <Input
-              placeholder="Filter activities by name..."
-              icon="search"
-              value={this.state.filterValue}
-              onChange={this.filterData}
-              fluid
-            />
-          </Grid.Column>
-          <Grid.Column width={3}>
-            <Dropdown
-              button
-              className="icon"
-              labeled
-              options={[{ key: 'date', text: 'Date', value: 'date' }, { key: 'name', text: 'Name', value: 'name' }]}
-              icon="sort"
-              text={_.startCase(_.camelCase(this.state.sortValue))}
-              value={this.state.sortValue}
-              onChange={this.sortData}
-            />
-          </Grid.Column>
-        </Grid>
+        <Input
+          placeholder="Filter activities by name..."
+          icon="search"
+          value={this.state.filterValue}
+          onChange={this.filterData}
+          style={{ width: '50%', minWidth: '100px' }}
+        />
         {this.state.filteredData.length > 0 &&
           <SportsTable
             sports={this.state.filteredData}
             deleteRow={this.handleDeleteRow}
             updateComments={this.handleUpdateComments}
+            sortBy={this.sortBy}
           />
             }
       </div>

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { Button, Sticky, Tab } from 'semantic-ui-react';
+import { Button, Tab } from 'semantic-ui-react';
 import * as sportsActions from '../dux/sports';
 import * as userActions from '../dux/users';
 import AddForm from './AddForm';
@@ -19,6 +19,7 @@ const defaultProps = {
 class Navigation extends React.Component {
   logout = () => {
     delete window.sessionStorage.token;
+    this.props.logout();
   }
 
   render() {
@@ -36,8 +37,31 @@ class Navigation extends React.Component {
           menu={{ secondary: true, pointing: true }}
           panes={
             [
-              { menuItem: 'Activities', render: () => <Tab.Pane attached={false}><SportsList {...this.props} /></Tab.Pane> },
-              { menuItem: 'Add new', render: () => <Tab.Pane attached={false}><AddForm {...this.props} /></Tab.Pane> },
+              {
+                menuItem: 'Activities',
+                render: () =>
+              (
+                <Tab.Pane attached={false}>
+                  <SportsList
+                    sports={this.props.sports}
+                    message={this.props.message}
+                    fetchSports={this.props.fetchSports}
+                    deleteSport={this.props.deleteSport}
+                    updateSport={this.props.updateSport}
+                  />
+                </Tab.Pane>
+            ) },
+              {
+              menuItem: 'Add new',
+              render: () =>
+              (
+                <Tab.Pane attached={false}>
+                  <AddForm
+                    addSports={this.props.addSports}
+                    message={this.props.message}
+                  />
+                </Tab.Pane>
+            ) },
               { menuItem: 'Statistics', render: () => <Tab.Pane attached={false}>Todo</Tab.Pane> },
             ]
           }

@@ -17,9 +17,10 @@ export const deleteSport = sport => ({ type: DELETE_SPORT, sport });
 
 const defaultState = {
   sports: [],
+  message: undefined,
 };
 
-export default function sports(state = {}, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case FETCHED_SPORTS:
       return { ...state, sports: action.sports };
@@ -35,7 +36,6 @@ function* fetchSportsWorker() {
     const response = yield call(api.fetchSports);
     if (response.status === 200) {
       yield put(fetchedSports(response.data));
-      //fetch message
     } else {
       yield put(fetchMessage({ value: 'Fetching activities failed', error: true }));
     }

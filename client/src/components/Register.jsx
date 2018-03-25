@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
 import { Grid, Form, Button, Header, Message } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import * as userActions from '../dux/users';
 
 
 class Register extends React.Component {
@@ -20,7 +24,7 @@ class Register extends React.Component {
     if (nextProps.message && nextProps.message.error) {
       toast.error(nextProps.message.value);
     } else if (nextProps.registerSuccess) {
-      this.props.history.push('/login');
+      this.props.history.push('/');
     }
   }
 
@@ -85,6 +89,7 @@ class Register extends React.Component {
               />
               <Button fluid type="submit" color="teal">Register</Button>
             </Form>
+            <Link to="/">Back to login</Link>
           </Message>
         </Grid>
       </div>
@@ -92,4 +97,12 @@ class Register extends React.Component {
   }
 }
 
-export default Register;
+export default withRouter(connect(
+  state => ({
+    message: state.sports.message,
+    registerSuccess: state.users.registerSuccess,
+  }),
+  dispatch => (bindActionCreators({
+    ...userActions,
+  }, dispatch)),
+)(Register));

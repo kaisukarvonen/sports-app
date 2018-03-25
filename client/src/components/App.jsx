@@ -15,7 +15,7 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.props.isAuthenticated);
+    console.log('is authenticated?'+this.props.isAuthenticated);
     return (
       <Router>
         <Switch>

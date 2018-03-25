@@ -76,7 +76,7 @@ class Login extends React.Component {
                 value={this.state.password}
                 onChange={this.handleOnChange}
               />
-              <Button fluid type="submit" color="teal">Login</Button>
+              <Button style={{ width: '60%', minWidth: '200px'}} type="submit" color="teal">Login</Button>
             </Form>
             <p style={{ padding: '6px' }}>
               <Link to="/register">Create new user account</Link>

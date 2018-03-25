@@ -9,6 +9,7 @@ import 'react-day-picker/lib/style.css';
 
 const propTypes = {
   addSport: PropTypes.func.isRequired,
+  message: PropTypes.object.isRequired,
 };
 
 const defaultProps = {
