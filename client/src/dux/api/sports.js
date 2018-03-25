@@ -2,7 +2,7 @@ import * as axios from 'axios';
 
 export function fetchSports() {
   const promise =
-    axios.get('/sports/all', {
+    axios.get('http://localhost:3001/sports/all', {
       headers: {
         Authorization: `Bearer ${window.sessionStorage.token}`,
       },
@@ -15,7 +15,7 @@ export function fetchSports() {
 
 export function addSport(action) {
   const promise =
-    axios.put('/sports/add/', {
+    axios.put('http://localhost:3001/sports/add/', {
       activityName: action.sport.activityName,
       date: action.sport.date,
       duration: action.sport.duration,
@@ -36,7 +36,7 @@ export function addSport(action) {
 export function updateSport(action) {
   console.log(action.sport);
   const promise =
-    axios.put('/sports/update/', {
+    axios.put('http://localhost:3001/sports/update/', {
       id: action.sport._id,
       comments: action.sport.comments,
     })

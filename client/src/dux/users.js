@@ -46,6 +46,7 @@ export default function users(state = {}, action) {
 function* loginUserWorker(action) {
   try {
     const response = yield call(api.loginUser, action);
+    console.log(response);
     if (response.status === 200) {
       window.sessionStorage.setItem('token', response.data.token);
       yield put(loginSuccess());

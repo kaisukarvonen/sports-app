@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
-import { Grid, Input, Icon, Dropdown } from 'semantic-ui-react';
+import { Input } from 'semantic-ui-react';
 import SportsTable from './SportsTable';
 
 const propTypes = {
@@ -91,7 +91,7 @@ class SportsList extends React.Component {
           icon="search"
           value={this.state.filterValue}
           onChange={this.filterData}
-          style={{ width: '50%', minWidth: '100px' }}
+          style={{ width: '50%', minWidth: '250px' }}
         />
         {this.state.filteredData.length > 0 &&
           <SportsTable

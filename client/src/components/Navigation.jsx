@@ -57,7 +57,7 @@ class Navigation extends React.Component {
               (
                 <Tab.Pane attached={false}>
                   <AddForm
-                    addSports={this.props.addSports}
+                    addSport={this.props.addSport}
                     message={this.props.message}
                   />
                 </Tab.Pane>
@@ -74,7 +74,7 @@ class Navigation extends React.Component {
           labelPosition="right"
           onClick={this.logout}
           style={{
-            bottom: '20px', margin: '0 auto', position: 'absolute', right: '30px',
+            bottom: '20px', margin: '0 auto', position: 'fixed', right: '15px',
           }}
         />
       </div>

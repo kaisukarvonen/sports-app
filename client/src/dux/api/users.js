@@ -3,7 +3,7 @@ import * as axios from 'axios';
 
 export function loginUser(action) {
   const promise =
-    axios.put('/user/login', {
+    axios.put('http://localhost:3001/user/login', {
       username: action.user.username,
       password: action.user.password,
     })
@@ -15,7 +15,7 @@ export function loginUser(action) {
 
 export function authenticate() {
   const promise =
-    axios.get('/user/authenticate', {
+    axios.get('http://localhost:3001/user/authenticate', {
       headers: {
         Authorization: `Bearer ${window.sessionStorage.token}`,
       },
@@ -28,7 +28,7 @@ export function authenticate() {
 
 export function registerUser(action) {
   const promise =
-    axios.put('/user/register', {
+    axios.put('http://localhost:3001/user/register', {
       username: action.user.username,
       password: action.user.password,
       firstname: action.user.firstname,
