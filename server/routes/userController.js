@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import { verifyToken } from '../utils/token';
 import User from '../models/user';
+import { JWT_TOKEN } from '../config';
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ function generateToken(user) {
     username: user.username,
     _id: user._id.toString(),
   };
-  return jwt.sign(u, process.env.JWT_TOKEN, {
+  return jwt.sign(u, JWT_TOKEN, {
     expiresIn: 60 * 60 * 24
   });
 }
@@ -45,6 +46,7 @@ router.put('/register', (req, res) => {
 
 
 router.put('/login', (req, res) => {
+  console.log('in login');
   User.authenticate(req.body.username, req.body.password, (error, user) => {
     if (error || !user) {
       res.sendStatus(500);
@@ -58,6 +60,7 @@ router.put('/login', (req, res) => {
 });
 
 router.get('/authenticate', (req, res) => {
+  console.log('authetnicate');
   if (verifyToken(req.headers['authorization']) === undefined) {
     res.sendStatus(500);
   } else {

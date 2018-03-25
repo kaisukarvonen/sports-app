@@ -1,0 +1,30 @@
+version: "3"
+services:
+
+  backend:
+    container_name: backend
+    build: ./server/
+    volumes:
+      - './server:/usr/src/'
+      - './server/package.json:/usr/src/package.json'
+    ports:
+      - '3001:3001'
+    links:
+      - mongodb
+
+  client:
+    container_name: client
+    build: ./client/
+    volumes:
+      - './client:/usr/src/'
+      - '/usr/src/node_modules'
+    ports:
+      - '3000:3000'
+
+  mongodb:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - '/data/db:/data/db'
