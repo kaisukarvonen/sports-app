@@ -47,18 +47,8 @@ class Navigation extends React.Component {
                     message={this.props.message}
                     fetchSports={this.props.fetchSports}
                     deleteSport={this.props.deleteSport}
-                    updateSport={this.props.updateSport}
-                  />
-                </Tab.Pane>
-            ) },
-              {
-              menuItem: 'Add new',
-              render: () =>
-              (
-                <Tab.Pane attached={false}>
-                  <AddForm
                     addSport={this.props.addSport}
-                    message={this.props.message}
+                    updateSport={this.props.updateSport}
                   />
                 </Tab.Pane>
             ) },

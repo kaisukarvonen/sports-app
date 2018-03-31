@@ -2,12 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Fuse from 'fuse.js';
 import _ from 'lodash';
+import moment from 'moment';
 import { toast } from 'react-toastify';
-import { Input } from 'semantic-ui-react';
+import 'react-day-picker/lib/style.css';
+import { Input, Button, Modal, Icon, Form, Popup } from 'semantic-ui-react';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import { formatDate } from 'react-day-picker/moment';
 import SportsTable from './SportsTable';
 
 const propTypes = {
-  sports: PropTypes.array,
+  sports: PropTypes.array.isRequired,
   fetchSports: PropTypes.func.isRequired,
   deleteSport: PropTypes.func.isRequired,
   updateSport: PropTypes.func.isRequired,
@@ -15,7 +19,6 @@ const propTypes = {
 };
 
 const defaultProps = {
-  sports: [],
   message: {},
 };
 
@@ -23,6 +26,11 @@ class SportsList extends React.Component {
   state = {
     filteredData: [],
     filterValue: '',
+    modalOpen: false,
+    activityName: '',
+    date: new Date(),
+    duration: 1,
+    comments: '',
   };
 
   componentDidMount() {
@@ -40,6 +48,29 @@ class SportsList extends React.Component {
       } else {
         toast.success(nextProps.message.value);
       }
+    }
+  }
+
+  onDateChange = (date) => {
+    this.setState({ date });
+  }
+
+  handleOnChange = (e, { name, value }) => {
+    this.setState({ [name]: value });
+  }
+
+  handleFormSubmit = () => {
+    const sport = {
+      activityName: this.state.activityName,
+      date: this.state.date,
+      duration: this.state.duration,
+      comments: this.state.comments,
+    };
+    if (sport.activityName === '' || sport.duration == 0) {
+      toast.error('Please fill out all mandatory fields!');
+    } else {
+      this.setState({ activityName: '', comments: '', modalOpen: false });
+      this.props.addSport(sport);
     }
   }
 
@@ -74,13 +105,15 @@ class SportsList extends React.Component {
   }
 
   sortBy = (category) => {
-    let filtered;
-    if (category === 'date') {
-      filtered = _.orderBy(this.props.sports, s => s[category], ['desc']);
-    } else {
-      filtered = _.sortBy(this.props.sports, s => s[category].toLowerCase());
+    let filtered = _.orderBy(this.props.sports, s => s[category].toLowerCase(), ['desc']);
+    if (_.isEqual(filtered, this.state.filteredData)) {
+      filtered = _.orderBy(this.props.sports, s => s[category].toLowerCase(), ['asc']);
     }
     this.setState({ filteredData: filtered });
+  }
+
+  toggleModal = () => {
+    this.setState({ modalOpen: !this.state.modalOpen });
   }
 
   render() {
@@ -91,8 +124,76 @@ class SportsList extends React.Component {
           icon="search"
           value={this.state.filterValue}
           onChange={this.filterData}
-          style={{ width: '50%', minWidth: '250px' }}
+          style={{ width: '40%', minWidth: '250px' }}
         />
+        <Modal
+          size="small"
+          dimmer="blurring"
+          open={this.state.modalOpen}
+          onClose={this.toggleModal}
+          trigger={
+            <Button
+              content="Add new"
+              color="teal"
+              icon="add"
+              size="tiny"
+              labelPosition="right"
+              onClick={this.toggleModal}
+              style={{ float: 'right' }}
+            />
+        }
+        >
+          <Modal.Header>Add new activity
+            <Icon name="close" link onClick={this.toggleModal} style={{ float: 'right' }} />
+          </Modal.Header>
+          <Modal.Content>
+            <Form onSubmit={this.handleFormSubmit}>
+              <Form.Input
+                label="Sport activity *"
+                placeholder="Activity name"
+                name="activityName"
+                value={this.state.activityName}
+                onChange={this.handleOnChange}
+              />
+              <Form.Group widths="equal">
+                <div style={{ marginLeft: '6px' }}>
+                  <p style={{ fontSize: '0.92em', fontWeight: '600', marginBottom: 0 }} >Date *</p>
+                  <DayPickerInput
+                    formatDate={formatDate}
+                    onDayChange={this.onDateChange}
+                    value={this.state.date}
+                    format="DD.MM.YYYY"
+                    dayPickerProps={{
+                    selectedDays: this.state.date,
+                    disabledDays: { after: new Date() },
+                    firstDayOfWeek: 1,
+                  }}
+                  />
+                </div>
+                <Form.Input
+                  label="Duration (hrs) *"
+                  placeholder="Duration"
+                  type="number"
+                  min={0.25}
+                  step="0.25"
+                  name="duration"
+                  value={this.state.duration}
+                  onChange={this.handleOnChange}
+                />
+              </Form.Group>
+              <Form.TextArea
+                label="Comments"
+                placeholder="Comments"
+                name="comments"
+                rows={2}
+                autoHeight
+                value={this.state.comments}
+                onChange={this.handleOnChange}
+              />
+              <Button type="submit" color="teal">Save</Button>
+            </Form>
+          </Modal.Content>
+        </Modal>
         {this.state.filteredData.length > 0 &&
           <SportsTable
             sports={this.state.filteredData}
