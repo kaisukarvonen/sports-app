@@ -9,12 +9,14 @@ const SportsTable = (props) => {
       sport={sport}
       deleteRow={props.deleteRow}
       updateComments={props.updateComments}
+      formatDuration={props.formatDuration}
+
     />
   ));
 
 
   return (
-    <Table basic="very" compact="very" className="activity-list">
+    <Table basic="very" compact="very" className="activity-list" style={{ paddingTop: '15px'}}>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>Sport activity <Icon link name="sort" onClick={() => props.sortBy('name')} /></Table.HeaderCell>

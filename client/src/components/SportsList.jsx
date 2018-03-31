@@ -5,10 +5,11 @@ import _ from 'lodash';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import 'react-day-picker/lib/style.css';
-import { Input, Button, Modal, Icon, Form, Popup } from 'semantic-ui-react';
+import { Input, Button, Modal, Icon, Form, Responsive } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate } from 'react-day-picker/moment';
 import SportsTable from './SportsTable';
+import MobileSportsList from './MobileSportsList';
 
 const propTypes = {
   sports: PropTypes.array.isRequired,
@@ -66,8 +67,9 @@ class SportsList extends React.Component {
       duration: this.state.duration,
       comments: this.state.comments,
     };
-    if (sport.activityName === '' || sport.duration == 0) {
-      toast.error('Please fill out all mandatory fields!');
+    if (sport.activityName === '') {
+      // does not work in modal
+      // toast.error('Please fill out all mandatory fields!');
     } else {
       this.setState({ activityName: '', comments: '', modalOpen: false });
       this.props.addSport(sport);
@@ -116,6 +118,22 @@ class SportsList extends React.Component {
     this.setState({ modalOpen: !this.state.modalOpen });
   }
 
+  formatDuration = (d) => {
+    let value;
+    let minutes = '';
+    const minuteValues = { 25: '15', 5: '30', 75: '45' };
+    const parts = (`${d}`).split('.');
+    if (d % 1 !== 0) {
+      minutes = `${minuteValues[parts[1]]} min`;
+    }
+    if (d >= 1) {
+      value = `${parts[0]} h ${minutes}`;
+    } else {
+      value = `${minutes}`;
+    }
+    return value;
+  }
+
   render() {
     return (
       <div>
@@ -132,14 +150,15 @@ class SportsList extends React.Component {
           open={this.state.modalOpen}
           onClose={this.toggleModal}
           trigger={
-            <Button
+            <Responsive
+              as={Button}
               content="Add new"
               color="teal"
               icon="add"
               size="tiny"
               labelPosition="right"
               onClick={this.toggleModal}
-              style={{ float: 'right' }}
+              className="add"
             />
         }
         >
@@ -194,14 +213,32 @@ class SportsList extends React.Component {
             </Form>
           </Modal.Content>
         </Modal>
-        {this.state.filteredData.length > 0 &&
+        <Responsive
+          minWidth={790}
+        >
+          {this.state.filteredData.length > 0 &&
           <SportsTable
             sports={this.state.filteredData}
             deleteRow={this.handleDeleteRow}
             updateComments={this.handleUpdateComments}
             sortBy={this.sortBy}
+            formatDuration={this.formatDuration}
           />
             }
+        </Responsive>
+        <Responsive
+          maxWidth={790}
+        >
+          {this.state.filteredData.map(sport =>
+            (<MobileSportsList
+              sport={sport}
+              deleteRow={this.handleDeleteRow}
+              formatDuration={this.formatDuration}
+
+            />
+              ))
+          }
+        </Responsive>
       </div>
     );
   }

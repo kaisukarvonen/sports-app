@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
-import { Button, Tab } from 'semantic-ui-react';
+import { Button, Tab, Responsive, Segment } from 'semantic-ui-react';
 import * as sportsActions from '../dux/sports';
 import * as userActions from '../dux/users';
 import AddForm from './AddForm';
@@ -32,9 +32,11 @@ class Navigation extends React.Component {
           newestOnTop={false}
           closeOnClick
         />
-
-        <Tab
+        <Responsive
+          minWidth={790}
+          as={Tab}
           menu={{ secondary: true, pointing: true }}
+          style={{ marginBottom: '22px' }}
           panes={
             [
               {
@@ -56,6 +58,19 @@ class Navigation extends React.Component {
             ]
           }
         />
+        <Responsive
+          maxWidth={790}
+          as={Segment}
+        >
+          <SportsList
+            sports={this.props.sports}
+            message={this.props.message}
+            fetchSports={this.props.fetchSports}
+            deleteSport={this.props.deleteSport}
+            addSport={this.props.addSport}
+            updateSport={this.props.updateSport}
+          />
+        </Responsive>
         <Button
           content="Log out"
           color="teal"
@@ -64,7 +79,7 @@ class Navigation extends React.Component {
           labelPosition="right"
           onClick={this.logout}
           style={{
-            bottom: '20px', margin: '0 auto', position: 'fixed', right: '15px',
+            bottom: '12px', margin: '0 auto', position: 'fixed', right: '15px',
           }}
         />
       </div>

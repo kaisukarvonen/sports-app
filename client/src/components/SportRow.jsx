@@ -32,23 +32,6 @@ class SportRow extends React.Component {
     this.changeEditMode();
   }
 
-  formatDuration = () => {
-    const d = this.props.sport.duration;
-    let value;
-    let minutes = '';
-    const minuteValues = { 25: '15', 5: '30', 75: '45' };
-    const parts = (d + '').split('.');
-    if (d % 1 !== 0) {
-      minutes = `${minuteValues[parts[1]]} min`;
-    }
-    if (d >= 1) {
-      value = `${parts[0]} h ${minutes}`;
-    } else {
-      value = `${minutes}`;
-    }
-    return value;
-  }
-
   render() {
     const { sport } = this.props;
 
@@ -56,7 +39,7 @@ class SportRow extends React.Component {
       <Table.Row>
         <Table.Cell width={3}>{sport.name}</Table.Cell>
         <Table.Cell width={3}>{moment(sport.date).format('DD.MM.YYYY')}</Table.Cell>
-        <Table.Cell width={2}>{this.formatDuration()}</Table.Cell>
+        <Table.Cell width={2}>{this.props.formatDuration(sport.duration)}</Table.Cell>
         { !this.state.editMode ?
           <Table.Cell width={8}>
             {sport.comments}

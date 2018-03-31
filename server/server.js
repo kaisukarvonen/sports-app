@@ -1,8 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
-import session from 'express-session';
-import connectMongo from 'connect-mongo';
 import cors from 'cors';
 import { ORIGIN, MONGOURL } from './config';
 import sportsController from './routes/sportsController';
@@ -11,7 +9,7 @@ import userController from './routes/userController';
 mongoose.connect(MONGOURL);
 
 const app = express();
-app.use(cors({origin: ORIGIN}));
+app.use(cors({ origin: ORIGIN }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

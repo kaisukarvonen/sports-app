@@ -6,7 +6,6 @@
   margin: auto;
 }
 
-
 body {
   background-color: #e4efef;
 }
@@ -14,6 +13,16 @@ body {
 .login-frame {
   margin-top: 60px;
 
+}
+
+.add {
+  float: right;
+}
+
+@media (max-width: 450px) {
+  .add {
+    float: left;
+  }
 }
 
 .login-card {

@@ -1,8 +1,9 @@
 import * as axios from 'axios';
+import { baseUrl } from '../config';
 
 export function fetchSports() {
   const promise =
-    axios.get('http://localhost:3001/sports/all', {
+    axios.get(`${baseUrl}/sports/all`, {
       headers: {
         Authorization: `Bearer ${window.sessionStorage.token}`,
       },
@@ -15,7 +16,7 @@ export function fetchSports() {
 
 export function addSport(action) {
   const promise =
-    axios.put('http://localhost:3001/sports/add/', {
+    axios.put(`${baseUrl}/sports/add/`, {
       activityName: action.sport.activityName,
       date: action.sport.date,
       duration: action.sport.duration,
@@ -25,18 +26,18 @@ export function addSport(action) {
       headers: {
         Authorization: `Bearer ${window.sessionStorage.token}`,
       },
-      },
+    },
     )
-    .then(response => response)
+      .then(response => response)
     .catch(error => error);
-    return promise;
+  return promise;
 }
 
 
 export function updateSport(action) {
   console.log(action.sport);
   const promise =
-    axios.put('http://localhost:3001/sports/update/', {
+    axios.put(`${baseUrl}/sports/update/`, {
       id: action.sport._id,
       comments: action.sport.comments,
     })
@@ -49,7 +50,7 @@ export function updateSport(action) {
 
 export function deleteSport(action) {
   const promise =
-    axios.delete(`/sports/delete/${action.sport._id}`)
+    axios.delete(`${baseUrl}/sports/delete/${action.sport._id}`)
       .then(response => response)
       .catch(error => error);
   return promise;
