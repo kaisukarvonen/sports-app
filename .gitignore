@@ -1,3 +1,5 @@
 node_modules/
-server/config.js
+config.js
 dump/
+docker-compose.yml
+Dockerfile
