@@ -5,7 +5,8 @@ import { Card, Icon } from 'semantic-ui-react';
 
 const propTypes = {
   sport: PropTypes.object.isRequired,
-  deleteSport: PropTypes.func.isRequired,
+  deleteRow: PropTypes.func.isRequired,
+  formatDuration: PropTypes.func.isRequired,
 };
 
 const defaultProps = {
@@ -23,8 +24,7 @@ class MobileSportsList extends React.Component {
   render() {
     const { sport } = this.props;
     return (
-      <div style={{ marginTop: '7px' }}>
-        <Card fluid>
+        <Card fluid style={{ marginTop: '5px' }}>
           <Card.Content>
             <Card.Header>
               {sport.name}
@@ -44,7 +44,6 @@ class MobileSportsList extends React.Component {
             </Card.Description>
           </Card.Content>
         </Card>
-      </div>
     );
   }
 }

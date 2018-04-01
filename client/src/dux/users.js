@@ -33,7 +33,6 @@ export default function users(state = {}, action) {
     case AUTHENTICATE_USER:
       return { ...state, isAuthenticated: undefined };
     case AUTHENTICATED_USER:
-      console.log(action.value);
       return { ...state, isAuthenticated: action.value };
     case LOGOUT_USER:
       return { ...state, isAuthenticated: false };
@@ -46,7 +45,6 @@ export default function users(state = {}, action) {
 function* loginUserWorker(action) {
   try {
     const response = yield call(api.loginUser, action);
-    console.log(response);
     if (response.status === 200) {
       window.sessionStorage.setItem('token', response.data.token);
       yield put(loginSuccess());
@@ -80,7 +78,6 @@ function* authenticateUserWorker() {
     try {
       const response = yield call(api.authenticate);
       if (response.status === 200) {
-        console.log('** autheticate successful **');
         yield put(authenticated(true));
       } else {
         yield put(authenticated(false));

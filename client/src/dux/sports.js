@@ -8,7 +8,7 @@ const DELETE_SPORT = 'DELETE_SPORT';
 const ADD_SPORT = 'ADD_SPORT';
 const UPDATE_SPORT = 'UPDATE_SPORT';
 
-export const fetchSports = () => ({ type: FETCH_SPORTS });
+export const fetchSports = (start, end) => ({ type: FETCH_SPORTS, start, end });
 export const addSport = sport => ({ type: ADD_SPORT, sport });
 export const updateSport = sport => ({ type: UPDATE_SPORT, sport });
 export const fetchedSports = sports => ({ type: FETCHED_SPORTS, sports });
@@ -31,9 +31,9 @@ export default function (state = {}, action) {
   }
 }
 
-function* fetchSportsWorker() {
+function* fetchSportsWorker(action) {
   try {
-    const response = yield call(api.fetchSports);
+    const response = yield call(api.fetchSports, action);
     if (response.status === 200) {
       yield put(fetchedSports(response.data));
     } else {
@@ -48,7 +48,7 @@ function* addSportWorker(action) {
   try {
     const response = yield call(api.addSport, action);
     if (response.status === 200) {
-      yield put(fetchSports());
+      // yield put(fetchSports());
       yield put(fetchMessage({ value: 'New activity added', error: false }));
     } else {
       yield put(fetchMessage({ value: 'Adding new activity failed', error: true }));
@@ -62,7 +62,7 @@ function* updateSportWorker(action) {
   try {
     const response = yield call(api.updateSport, action);
     if (response.status === 200) {
-      yield put(fetchSports());
+      // yield put(fetchSports());
     } else {
       yield put(fetchMessage({ value: 'Updating activity failed', error: true }));
     }
@@ -75,7 +75,7 @@ function* deleteSportWorker(action) {
   try {
     const response = yield call(api.deleteSport, action);
     if (response.status === 200) {
-      yield put(fetchSports());
+      // yield put(fetchSports());
     } else {
       yield put(fetchMessage({ value: 'Deleting activity failed', error: true }));
     }

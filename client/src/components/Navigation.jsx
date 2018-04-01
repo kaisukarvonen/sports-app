@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import { Button, Tab, Responsive, Segment } from 'semantic-ui-react';
 import * as sportsActions from '../dux/sports';
 import * as userActions from '../dux/users';
-import AddForm from './AddForm';
 import SportsList from './SportsList';
+import Statistics from './Statistics';
 
 const propTypes = {
 };
@@ -53,8 +53,20 @@ class Navigation extends React.Component {
                     updateSport={this.props.updateSport}
                   />
                 </Tab.Pane>
-            ) },
-              { menuItem: 'Statistics', render: () => <Tab.Pane attached={false}>Todo</Tab.Pane> },
+            ),
+},
+              {
+                menuItem: 'Statistics',
+                render: () =>
+                (
+                  <Tab.Pane attached={false}>
+                    <Statistics
+                      sports={this.props.sports}
+                      fetchSports={this.props.fetchSports}
+                    />
+                  </Tab.Pane>
+              ),
+},
             ]
           }
         />

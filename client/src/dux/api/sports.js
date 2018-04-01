@@ -1,9 +1,9 @@
 import * as axios from 'axios';
 import { baseUrl } from '../config';
 
-export function fetchSports() {
+export function fetchSports(action) {
   const promise =
-    axios.get(`${baseUrl}/sports/all`, {
+    axios.get(`${baseUrl}/sports/all?start=${action.start}&end=${action.end}`, {
       headers: {
         Authorization: `Bearer ${window.sessionStorage.token}`,
       },

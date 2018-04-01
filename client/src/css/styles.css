@@ -17,10 +17,28 @@ body {
 
 .add {
   float: right;
+  margin: 2px;
+}
+
+.ui.header.custom {
+  margin: 4px;
+}
+
+i.icon.back {
+  float: right;
+}
+
+.statistics {
+  float: right;
 }
 
 @media (max-width: 450px) {
   .add {
+    float: left;
+    margin: 2px;
+
+  }
+  .statistics {
     float: left;
   }
 }

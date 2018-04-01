@@ -8,6 +8,7 @@ import 'react-day-picker/lib/style.css';
 import { Input, Button, Modal, Icon, Form, Responsive } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate } from 'react-day-picker/moment';
+import Statistics from './Statistics';
 import SportsTable from './SportsTable';
 import MobileSportsList from './MobileSportsList';
 
@@ -32,10 +33,13 @@ class SportsList extends React.Component {
     date: new Date(),
     duration: 1,
     comments: '',
+    start: moment().subtract(1, 'month').startOf('month'),
+    end: moment().endOf('month'),
+    active: 'Activities',
   };
 
   componentDidMount() {
-    this.props.fetchSports();
+    this.props.fetchSports(this.state.start.toDate(), this.state.end.toDate());
   }
 
   componentWillReceiveProps(nextProps) {
@@ -137,100 +141,115 @@ class SportsList extends React.Component {
   render() {
     return (
       <div>
-        <Input
-          placeholder="Filter activities by name..."
-          icon="search"
-          value={this.state.filterValue}
-          onChange={this.filterData}
-          style={{ width: '40%', minWidth: '250px' }}
-        />
-        <Modal
-          size="small"
-          dimmer="blurring"
-          open={this.state.modalOpen}
-          onClose={this.toggleModal}
-          trigger={
-            <Responsive
-              as={Button}
-              content="Add new"
-              color="teal"
-              icon="add"
-              size="tiny"
-              labelPosition="right"
-              onClick={this.toggleModal}
-              className="add"
+        { this.state.active === 'Activities' ?
+          <div>
+            <Input
+              placeholder="Filter activities by name..."
+              icon="search"
+              value={this.state.filterValue}
+              onChange={this.filterData}
+              style={{ width: '40%', minWidth: '250px', float: 'left', marginBottom: '5px' }}
             />
-        }
-        >
-          <Modal.Header>Add new activity
-            <Icon name="close" link onClick={this.toggleModal} style={{ float: 'right' }} />
-          </Modal.Header>
-          <Modal.Content>
-            <Form onSubmit={this.handleFormSubmit}>
-              <Form.Input
-                label="Sport activity *"
-                placeholder="Activity name"
-                name="activityName"
-                value={this.state.activityName}
-                onChange={this.handleOnChange}
+            <Responsive
+              maxWidth={790}
+            >
+              <Button
+                icon="bar chart"
+                content="Statistics"
+                color="teal"
+                size="tiny"
+                labelPosition="right"
+                onClick={() => this.setState({ active: 'Statistics' })}
+                className="statistics"
               />
-              <Form.Group widths="equal">
-                <div style={{ marginLeft: '6px' }}>
-                  <p style={{ fontSize: '0.92em', fontWeight: '600', marginBottom: 0 }} >Date *</p>
-                  <DayPickerInput
-                    formatDate={formatDate}
-                    onDayChange={this.onDateChange}
-                    value={this.state.date}
-                    format="DD.MM.YYYY"
-                    dayPickerProps={{
+            </Responsive>
+            <Modal
+              size="small"
+              dimmer="blurring"
+              open={this.state.modalOpen}
+              onClose={this.toggleModal}
+              trigger={
+                <Button
+                  content="Add new"
+                  color="teal"
+                  icon="add"
+                  size="tiny"
+                  labelPosition="right"
+                  onClick={this.toggleModal}
+                  className="add"
+                />
+        }
+            >
+              <Modal.Header>Add new activity
+                <Icon name="close" link onClick={this.toggleModal} style={{ float: 'right' }} />
+              </Modal.Header>
+              <Modal.Content>
+                <Form onSubmit={this.handleFormSubmit}>
+                  <Form.Input
+                    label="Sport activity *"
+                    placeholder="Activity name"
+                    name="activityName"
+                    value={this.state.activityName}
+                    onChange={this.handleOnChange}
+                  />
+                  <Form.Group widths="equal">
+                    <div style={{ marginLeft: '6px' }}>
+                      <p style={{ fontSize: '0.92em', fontWeight: '600', marginBottom: 0 }} >Date *</p>
+                      <DayPickerInput
+                        formatDate={formatDate}
+                        onDayChange={this.onDateChange}
+                        value={this.state.date}
+                        format="DD.MM.YYYY"
+                        dayPickerProps={{
                     selectedDays: this.state.date,
                     disabledDays: { after: new Date() },
                     firstDayOfWeek: 1,
                   }}
+                      />
+                    </div>
+                    <Form.Input
+                      label="Duration (hrs) *"
+                      placeholder="Duration"
+                      type="number"
+                      min={0.25}
+                      step="0.25"
+                      name="duration"
+                      value={this.state.duration}
+                      onChange={this.handleOnChange}
+                    />
+                  </Form.Group>
+                  <Form.TextArea
+                    label="Comments"
+                    placeholder="Comments"
+                    name="comments"
+                    rows={2}
+                    autoHeight
+                    value={this.state.comments}
+                    onChange={this.handleOnChange}
                   />
-                </div>
-                <Form.Input
-                  label="Duration (hrs) *"
-                  placeholder="Duration"
-                  type="number"
-                  min={0.25}
-                  step="0.25"
-                  name="duration"
-                  value={this.state.duration}
-                  onChange={this.handleOnChange}
-                />
-              </Form.Group>
-              <Form.TextArea
-                label="Comments"
-                placeholder="Comments"
-                name="comments"
-                rows={2}
-                autoHeight
-                value={this.state.comments}
-                onChange={this.handleOnChange}
+                  <Button type="submit" color="teal">Save</Button>
+                </Form>
+              </Modal.Content>
+            </Modal>
+            <Responsive
+              minWidth={790}
+            >
+              {this.state.filteredData.length > 0 &&
+              <SportsTable
+                sports={this.state.filteredData}
+                deleteRow={this.handleDeleteRow}
+                updateComments={this.handleUpdateComments}
+                sortBy={this.sortBy}
+                formatDuration={this.formatDuration}
               />
-              <Button type="submit" color="teal">Save</Button>
-            </Form>
-          </Modal.Content>
-        </Modal>
-        <Responsive
-          minWidth={790}
-        >
-          {this.state.filteredData.length > 0 &&
-          <SportsTable
-            sports={this.state.filteredData}
-            deleteRow={this.handleDeleteRow}
-            updateComments={this.handleUpdateComments}
-            sortBy={this.sortBy}
-            formatDuration={this.formatDuration}
-          />
             }
-        </Responsive>
-        <Responsive
-          maxWidth={790}
-        >
-          {this.state.filteredData.map(sport =>
+            </Responsive>
+            <Responsive
+              maxWidth={790}
+            >
+              {this.state.filteredData.map(sport =>
             (<MobileSportsList
+              key={sport._id}
               sport={sport}
               deleteRow={this.handleDeleteRow}
               formatDuration={this.formatDuration}
@@ -238,7 +257,15 @@ class SportsList extends React.Component {
             />
               ))
           }
-        </Responsive>
+            </Responsive>
+          </div>
+          :
+          <Statistics
+            fetchSports={this.props.fetchSports}
+            sports={this.props.sports}
+            backToActivities={() => this.setState({ active: 'Activities' })}
+          />
+      }
       </div>
     );
   }
