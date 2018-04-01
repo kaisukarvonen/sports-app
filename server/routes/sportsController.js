@@ -1,5 +1,4 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import Sport from '../models/sport';
 import { verifyToken } from '../utils/token';
 
@@ -7,15 +6,15 @@ const router = express.Router();
 //  base path: /sports
 
 router.get('/all', (req, res) => {
-  const user = verifyToken(req.headers['authorization']);
-  Sport.find({"user_id": user._id }).sort('-date').exec((err, sports) => {
+  const user = verifyToken(req.headers.authorization);
+  Sport.find({ user_id: user._id, date: { $gte: req.query.start, $lte: req.query.end } }).sort('-date').exec((err, sports) => {
     if (err) throw err;
     res.json(sports);
   });
 });
 
 router.put('/add', (req, res) => {
-  const user = verifyToken(req.headers['authorization']);
+  const user = verifyToken(req.headers.authorization);
   const activity = new Sport({
     name: req.body.activityName,
     date: req.body.date,
