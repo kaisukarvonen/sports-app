@@ -24,7 +24,7 @@ const defaultState = {
   isAuthenticated: undefined,
 };
 
-export default function users(state = {}, action) {
+export default function users(state = defaultState, action) {
   switch (action.type) {
     case LOGIN_SUCCESS:
       return { ...state, isAuthenticated: true };
@@ -37,7 +37,7 @@ export default function users(state = {}, action) {
     case LOGOUT_USER:
       return { ...state, isAuthenticated: false };
     default:
-      return { ...defaultState, ...state };
+      return { ...state };
   }
 }
 

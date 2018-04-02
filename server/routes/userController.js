@@ -19,7 +19,7 @@ function generateToken(user) {
 }
 
 router.put('/register', (req, res) => {
-  User.find({"username": req.body.username }).exec((err, users) => {
+  User.find({ username: req.body.username }).exec((err, users) => {
     if (err) throw err;
     // console.log(users);
     if (users.count > 0) {
@@ -31,7 +31,6 @@ router.put('/register', (req, res) => {
         username: req.body.username,
         password: req.body.password,
       });
-      console.log(req.body);
       user.save((error) => {
         if (error) {
           res.sendStatus(500);
@@ -46,7 +45,6 @@ router.put('/register', (req, res) => {
 
 
 router.put('/login', (req, res) => {
-  console.log('in login');
   User.authenticate(req.body.username, req.body.password, (error, user) => {
     if (error || !user) {
       res.sendStatus(500);
@@ -60,11 +58,9 @@ router.put('/login', (req, res) => {
 });
 
 router.get('/authenticate', (req, res) => {
-  console.log('authetnicate');
-  if (verifyToken(req.headers['authorization']) === undefined) {
+  if (verifyToken(req.headers.authorization) === undefined) {
     res.sendStatus(500);
   } else {
-    console.log('valid token');
     res.sendStatus(200);
   }
 });

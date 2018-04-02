@@ -5,7 +5,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { toast } from 'react-toastify';
 import 'react-day-picker/lib/style.css';
-import { Input, Button, Modal, Icon, Form, Responsive } from 'semantic-ui-react';
+import { Input, Button, Modal, Icon, Form, Responsive, Header, Dropdown } from 'semantic-ui-react';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import { formatDate } from 'react-day-picker/moment';
 import Statistics from './Statistics';
@@ -36,6 +36,7 @@ class SportsList extends React.Component {
     start: moment().subtract(1, 'month').startOf('month'),
     end: moment().endOf('month'),
     active: 'Activities',
+    showMonths: 2,
   };
 
   componentDidMount() {
@@ -53,6 +54,12 @@ class SportsList extends React.Component {
       } else {
         toast.success(nextProps.message.value);
       }
+    }
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState.showMonths !== this.state.showMonths) {
+      this.props.fetchSports(nextState.start.toDate(), nextState.end.toDate());
     }
   }
 
@@ -122,6 +129,16 @@ class SportsList extends React.Component {
     this.setState({ modalOpen: !this.state.modalOpen });
   }
 
+  onDropdownChange = (e, { value }) => {
+    if (value !== this.state.showMonths) {
+      const start = moment().subtract(value-1, 'month').startOf('month');
+      const end = moment().endOf('month');
+      console.log(start);
+      console.log(end);
+      this.setState({ showMonths: value, start, end });
+    }
+  }
+
   formatDuration = (d) => {
     let value;
     let minutes = '';
@@ -139,16 +156,31 @@ class SportsList extends React.Component {
   }
 
   render() {
+    const start = `${this.state.start.month() + 1}/${this.state.start.year()}`;
+    const end = `${this.state.end.month() + 1}/${this.state.end.year()}`;
     return (
       <div>
         { this.state.active === 'Activities' ?
           <div>
+            <Header as="h4">Activities in {`${start} - ${end}`}</Header>
+            <Dropdown
+              floating
+              options={[
+                { key: 2, text: '2 months', value: 2, selected: this.state.showMonths === 2 },
+                { key: 4, text: '4 months', value: 4, selected: this.state.showMonths === 4 },
+                { key: 6, text: '6 months', value: 6, selected: this.state.showMonths === 6 },
+              ]}
+              text={`Show: ${this.state.showMonths} months`}
+              value={this.state.showMonths}
+              onChange={this.onDropdownChange}
+              style={{ marginRight: '8px', paddingTop: '3px' }}
+            />
             <Input
               placeholder="Filter activities by name..."
               icon="search"
               value={this.state.filterValue}
               onChange={this.filterData}
-              style={{ width: '40%', minWidth: '250px', float: 'left', marginBottom: '5px' }}
+              style={{ width: '40%', minWidth: '250px', marginBottom: '5px' }}
             />
             <Responsive
               maxWidth={790}

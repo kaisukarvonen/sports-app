@@ -23,9 +23,9 @@ router.put('/add', (req, res) => {
     user_id: user._id,
   });
 
-  activity.save((err) => {
+  activity.save((err, sport) => {
     if (err) res.sendStatus(500);
-    res.sendStatus(200);
+    res.json(sport);
   });
 });
 

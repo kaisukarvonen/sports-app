@@ -15,18 +15,19 @@ class App extends React.Component {
   }
 
   render() {
-    console.log('is authenticated?'+this.props.isAuthenticated);
+    console.log(`is authenticated?${this.props.isAuthenticated}`);
     return (
       <Router>
         <Switch>
-          <Route
-            exact
-            path="/"
-            component={
+          { this.props.isAuthenticated !== undefined &&
+            <Route
+              exact
+              path="/"
+              component={
             !this.props.isAuthenticated ?
               Login : Navigation
             }
-          />
+            />}
           <Route path="/register" component={Register} />
         </Switch>
       </Router>
