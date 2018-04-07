@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ToastContainer, toast } from 'react-toastify';
 import { Link, withRouter } from 'react-router-dom';
-import { Grid, Form, Button, Input, Header, Message } from 'semantic-ui-react';
+import { Grid, Form, Button, Header, Message } from 'semantic-ui-react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as userActions from '../dux/users';

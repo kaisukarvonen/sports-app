@@ -1,12 +1,9 @@
 import { Line } from 'react-chartjs-2';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 import _ from 'lodash';
-import { Header, Button, Icon, Responsive } from 'semantic-ui-react';
+import { Header, Icon, Responsive } from 'semantic-ui-react';
 
 const propTypes = {
   sports: PropTypes.array.isRequired,

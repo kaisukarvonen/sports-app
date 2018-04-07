@@ -29,10 +29,6 @@ class SportsList extends React.Component {
     filteredData: [],
     filterValue: '',
     modalOpen: false,
-    activityName: '',
-    date: new Date(),
-    duration: 1,
-    comments: '',
     start: moment().subtract(1, 'month').startOf('month'),
     end: moment().endOf('month'),
     active: 'Activities',
@@ -82,8 +78,8 @@ class SportsList extends React.Component {
       // does not work in modal
       // toast.error('Please fill out all mandatory fields!');
     } else {
-      this.setState({ activityName: '', comments: '', modalOpen: false });
       this.props.addSport(sport);
+      this.toggleModal();
     }
   }
 
@@ -126,15 +122,13 @@ class SportsList extends React.Component {
   }
 
   toggleModal = () => {
-    this.setState({ modalOpen: !this.state.modalOpen });
+    this.setState({ modalOpen: !this.state.modalOpen, activityName: '', date: new Date(), duration: 1, comments: '' });
   }
 
   onDropdownChange = (e, { value }) => {
     if (value !== this.state.showMonths) {
       const start = moment().subtract(value-1, 'month').startOf('month');
       const end = moment().endOf('month');
-      console.log(start);
-      console.log(end);
       this.setState({ showMonths: value, start, end });
     }
   }
@@ -232,11 +226,14 @@ class SportsList extends React.Component {
                         onDayChange={this.onDateChange}
                         value={this.state.date}
                         format="DD.MM.YYYY"
+                        inputProps={{
+                          readOnly: true
+                        }}
                         dayPickerProps={{
-                    selectedDays: this.state.date,
-                    disabledDays: { after: new Date() },
-                    firstDayOfWeek: 1,
-                  }}
+                          selectedDays: this.state.date,
+                          disabledDays: { after: new Date() },
+                          firstDayOfWeek: 1,
+                        }}
                       />
                     </div>
                     <Form.Input
