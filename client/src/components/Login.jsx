@@ -7,11 +7,15 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as userActions from '../dux/users';
 
+const propTypes = {
+  message: PropTypes.object,
+  loginUser: PropTypes.func.isRequired,
+};
 
 const defaultProps = {
   message: {},
-  loggedIn: false,
-};
+}
+
 
 class Login extends React.Component {
   constructor(props) {
@@ -76,7 +80,7 @@ class Login extends React.Component {
                 value={this.state.password}
                 onChange={this.handleOnChange}
               />
-              <Button style={{ width: '60%', minWidth: '200px'}} type="submit" color="teal">Login</Button>
+              <Button style={{ width: '60%', minWidth: '200px' }} type="submit" color="teal">Login</Button>
             </Form>
             <p style={{ padding: '6px' }}>
               <Link to="/register">Create new user account</Link>
@@ -87,12 +91,11 @@ class Login extends React.Component {
     );
   }
 }
+Login.propTypes = propTypes;
 Login.defaultProps = defaultProps;
-
 export default withRouter(connect(
   state => ({
     message: state.sports.message,
-    loggedIn: state.users.loggedIn,
   }),
   dispatch => (bindActionCreators({
     ...userActions,

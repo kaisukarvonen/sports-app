@@ -7,17 +7,20 @@ import { Header, Icon, Responsive } from 'semantic-ui-react';
 
 const propTypes = {
   sports: PropTypes.array.isRequired,
+  fetchSports: PropTypes.func.isRequired,
+  showMonths: PropTypes.number.isRequired,
+  backToActivities: PropTypes.func,
 };
 
 const defaultProps = {
+  backToActivities: undefined,
 };
 
 class Statistics extends React.Component {
   state = {
-    start: moment().startOf('month').subtract(5, 'months'),
+    start: moment().startOf('month').subtract(this.props.showMonths - 1, 'months'),
     end: moment().endOf('month'),
     lastMonth: moment(),
-    showMonths: 6,
   };
 
   componentWillMount() {
@@ -27,16 +30,16 @@ class Statistics extends React.Component {
 
   createLabels = (date) => {
     const labels = [];
-    for (let i = 0; i < this.state.showMonths; i++) {
+    for (let i = 0; i < this.props.showMonths; i++) {
       labels.push(moment(date).subtract(i, 'months').format('MMMM'));
     }
     return _.reverse(labels);
   }
 
   createData = (sports) => {
-    const data = new Array(this.state.showMonths).fill(0);
+    const data = new Array(this.props.showMonths).fill(0);
     const months = [];
-    for (let i=0; i < this.state.showMonths; i++) {
+    for (let i=0; i < this.props.showMonths; i++) {
       months.push(moment(this.state.lastMonth).subtract(i, 'months').month());
     }
     months.reverse();
@@ -54,7 +57,7 @@ class Statistics extends React.Component {
     this.createData(sports);
     return (
       <div>
-        <Header as="h4" className="custom" style={{ float: 'left'}}>Your activity in the past 6 months</Header>
+        <Header as="h4" className="custom" style={{ float: 'left'}}>Your activity in the past {this.props.showMonths} months</Header>
         <Responsive
           maxWidth={790}
           as={Icon}

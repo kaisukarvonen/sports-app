@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { Button, Tab, Responsive, Segment } from 'semantic-ui-react';
 import * as sportsActions from '../dux/sports';
 import * as userActions from '../dux/users';
@@ -11,9 +11,17 @@ import SportsList from './SportsList';
 import Statistics from './Statistics';
 
 const propTypes = {
+  logout: PropTypes.func.isRequired,
+  sports: PropTypes.array.isRequired,
+  fetchSports: PropTypes.func.isRequired,
+  deleteSport: PropTypes.func.isRequired,
+  addSport: PropTypes.func.isRequired,
+  updateSport: PropTypes.func.isRequired,
+  message: PropTypes.object,
 };
 
 const defaultProps = {
+  message: {},
 };
 
 class Navigation extends React.Component {
@@ -61,6 +69,7 @@ class Navigation extends React.Component {
                 (
                   <Tab.Pane attached={false}>
                     <Statistics
+                      showMonths={6}
                       sports={this.props.sports}
                       fetchSports={this.props.fetchSports}
                     />

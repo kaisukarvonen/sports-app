@@ -7,6 +7,15 @@ import { Link, withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import * as userActions from '../dux/users';
 
+const propTypes = {
+  registerUser: PropTypes.func.isRequired,
+  message: PropTypes.object,
+  registerSuccess: PropTypes.bool.isRequired,
+};
+
+const defaultProps = {
+  message: {},
+};
 
 class Register extends React.Component {
   constructor(props) {
@@ -20,7 +29,6 @@ class Register extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.message && nextProps.message.error) {
       toast.error(nextProps.message.value);
     } else if (nextProps.registerSuccess) {
@@ -43,7 +51,6 @@ class Register extends React.Component {
       toast.error('Please fill out all mandatory fields!');
     } else {
       this.props.registerUser(user);
-      console.log(user);
     }
   }
 
@@ -97,6 +104,8 @@ class Register extends React.Component {
   }
 }
 
+Register.propTypes = propTypes;
+Register.defaultProps = defaultProps;
 export default withRouter(connect(
   state => ({
     message: state.sports.message,

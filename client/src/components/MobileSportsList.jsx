@@ -24,26 +24,26 @@ class MobileSportsList extends React.Component {
   render() {
     const { sport } = this.props;
     return (
-        <Card fluid style={{ marginTop: '5px' }}>
-          <Card.Content>
-            <Card.Header>
-              {sport.name}
-              <Icon
-                circular
-                name="remove"
-                size="small"
-                color="red"
-                onClick={this.handleDeleteRow}
-                style={{ float: 'right', cursor: 'pointer' }}
-              />
-            </Card.Header>
-            <Card.Description>
+      <Card fluid>
+        <Card.Content>
+          <Card.Header>
+            {sport.name}
+            <Icon
+              circular
+              name="remove"
+              size="small"
+              color="red"
+              onClick={this.handleDeleteRow}
+              style={{ float: 'right', cursor: 'pointer' }}
+            />
+          </Card.Header>
+          <Card.Description>
             Date: {moment(sport.date).format('DD.MM.YYYY')}<br />
             Duration: {this.props.formatDuration(sport.duration)}<br />
-              {sport.comments}
-            </Card.Description>
-          </Card.Content>
-        </Card>
+            {sport.comments}
+          </Card.Description>
+        </Card.Content>
+      </Card>
     );
   }
 }

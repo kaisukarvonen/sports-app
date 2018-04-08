@@ -12,12 +12,35 @@ body {
 
 .login-frame {
   margin-top: 60px;
+}
 
+.statistics {
+  display: none;
 }
 
 .add {
   float: right;
-  margin: 2px;
+}
+
+@media (max-width: 790px) {
+  .statistics {
+    display: inline;
+  }
+
+  .add {
+    float: left;
+  }
+}
+
+
+.ui.grid.compact>.stackable.stackable.row>.column, .ui.stackable.grid.compact>.column.grid.compact>.column, .ui.stackable.grid.compact>.column.row>.column,
+.ui.stackable.grid.compact>.column:not(.row), .ui.stackable.grid.compact>.row>.column, .ui.stackable.grid.compact>.row>.wide.column,
+.ui.stackable.grid.compact>.wide.column {
+  padding: 0.1em !important;
+}
+
+.ui.grid.compact {
+  margin: 0 0 3px 0;
 }
 
 .ui.header.custom {
@@ -26,21 +49,6 @@ body {
 
 i.icon.back {
   float: right;
-}
-
-.statistics {
-  float: right;
-}
-
-@media (max-width: 450px) {
-  .add {
-    float: left;
-    margin: 2px;
-
-  }
-  .statistics {
-    float: left;
-  }
 }
 
 .login-card {
